@@ -1,7 +1,7 @@
 package org.sanhenanli.togo.network.valve;
 
 import org.sanhenanli.togo.network.business.Business;
-import org.sanhenanli.togo.network.model.Message;
+import org.sanhenanli.togo.network.message.Message;
 import org.sanhenanli.togo.network.pusher.AbstractPusher;
 import org.sanhenanli.togo.network.receiver.Receiver;
 import org.sanhenanli.togo.network.rule.AbstractRule;

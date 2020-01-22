@@ -1,6 +1,6 @@
 package org.sanhenanli.togo.network.pusher;
 
-import org.sanhenanli.togo.network.model.Message;
+import org.sanhenanli.togo.network.message.Message;
 
 /**
  * datetime 2020/1/22 14:02

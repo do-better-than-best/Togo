@@ -1,7 +1,7 @@
 package org.sanhenanli.togo.network.pusher;
 
 import org.sanhenanli.togo.network.business.BusinessFactory;
-import org.sanhenanli.togo.network.queue.MessageQueue;
+import org.sanhenanli.togo.network.message.MessageQueue;
 import org.sanhenanli.togo.network.receiver.ReceiverFactory;
 import org.sanhenanli.togo.network.recorder.PushRecorder;
 import org.sanhenanli.togo.network.tunnel.TunnelFactory;

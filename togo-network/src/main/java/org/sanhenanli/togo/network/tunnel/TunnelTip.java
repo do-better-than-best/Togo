@@ -1,7 +1,8 @@
-package org.sanhenanli.togo.network.model;
+package org.sanhenanli.togo.network.tunnel;
 
-import org.sanhenanli.togo.network.model.enums.TunnelTipCauseEnum;
-import org.sanhenanli.togo.network.model.enums.TunnelTipCodeEnum;
+import org.sanhenanli.togo.network.valve.ValveTip;
+import org.sanhenanli.togo.network.tunnel.enums.TunnelTipCauseEnum;
+import org.sanhenanli.togo.network.tunnel.enums.TunnelTipCodeEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

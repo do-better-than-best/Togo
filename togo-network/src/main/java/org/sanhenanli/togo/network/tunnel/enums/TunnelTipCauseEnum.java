@@ -1,4 +1,4 @@
-package org.sanhenanli.togo.network.model.enums;
+package org.sanhenanli.togo.network.tunnel.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

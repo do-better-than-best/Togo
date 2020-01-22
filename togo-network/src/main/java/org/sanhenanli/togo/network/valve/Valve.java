@@ -1,7 +1,6 @@
 package org.sanhenanli.togo.network.valve;
 
-import org.sanhenanli.togo.network.model.Message;
-import org.sanhenanli.togo.network.model.ValveTip;
+import org.sanhenanli.togo.network.message.Message;
 import org.sanhenanli.togo.network.receiver.Receiver;
 import org.sanhenanli.togo.network.rule.AbstractRule;
 import org.sanhenanli.togo.network.tunnel.AbstractTunnel;

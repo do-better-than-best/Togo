@@ -1,4 +1,4 @@
-package org.sanhenanli.togo.network.model;
+package org.sanhenanli.togo.network.pusher;
 
 import org.sanhenanli.togo.network.receiver.Receiver;
 import org.sanhenanli.togo.network.tunnel.AbstractTunnel;

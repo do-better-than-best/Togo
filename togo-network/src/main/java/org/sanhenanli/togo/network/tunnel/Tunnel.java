@@ -1,6 +1,5 @@
 package org.sanhenanli.togo.network.tunnel;
 
-import org.sanhenanli.togo.network.model.TunnelTip;
 import org.sanhenanli.togo.network.receiver.Receiver;
 
 /**

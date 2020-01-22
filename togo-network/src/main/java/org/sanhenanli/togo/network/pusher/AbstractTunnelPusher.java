@@ -1,11 +1,12 @@
 package org.sanhenanli.togo.network.pusher;
 
+import org.sanhenanli.togo.network.business.Business;
+import org.sanhenanli.togo.network.business.BusinessFactory;
 import org.sanhenanli.togo.network.executor.Executor;
 import org.sanhenanli.togo.network.lock.PushLock;
-import org.sanhenanli.togo.network.model.Message;
-import org.sanhenanli.togo.network.model.PusherIdentity;
-import org.sanhenanli.togo.network.model.TunnelTip;
-import org.sanhenanli.togo.network.queue.MessageQueue;
+import org.sanhenanli.togo.network.message.Message;
+import org.sanhenanli.togo.network.tunnel.TunnelTip;
+import org.sanhenanli.togo.network.message.MessageQueue;
 import org.sanhenanli.togo.network.receiver.Receiver;
 import org.sanhenanli.togo.network.recorder.PushRecorder;
 import org.sanhenanli.togo.network.trigger.ScheduleTrigger;
@@ -14,6 +15,7 @@ import org.sanhenanli.togo.network.tunnel.AbstractTunnel;
 import lombok.EqualsAndHashCode;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * datetime 2020/1/22 14:08
@@ -27,13 +29,15 @@ public abstract class AbstractTunnelPusher extends PusherIdentity implements Tun
     protected PushRecorder recorder;
     protected PushLock lock;
     protected Executor executor;
+    protected BusinessFactory businessFactory;
 
-    public AbstractTunnelPusher(Receiver receiver, AbstractTunnel tunnel, MessageQueue queue, PushRecorder recorder, PushLock lock, Executor executor) {
+    public AbstractTunnelPusher(Receiver receiver, AbstractTunnel tunnel, MessageQueue queue, PushRecorder recorder, PushLock lock, Executor executor, BusinessFactory businessFactory) {
         super(receiver, tunnel);
         this.queue = queue;
         this.recorder = recorder;
         this.lock = lock;
         this.executor = executor;
+        this.businessFactory = businessFactory;
     }
 
     @Override
@@ -43,7 +47,11 @@ public abstract class AbstractTunnelPusher extends PusherIdentity implements Tun
 
     @Override
     public void add(Message message, boolean head) {
-        queue.add(receiver, message, tunnel, head);
+        List<Business> bizs = businessFactory.recursiveInferiors(message.getBiz());
+        for (Business biz : bizs) {
+            message.setBiz(biz);
+            queue.add(receiver, message, tunnel, head);
+        }
         start();
     }
 

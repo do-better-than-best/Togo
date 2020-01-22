@@ -1,4 +1,4 @@
-package org.sanhenanli.togo.network.model;
+package org.sanhenanli.togo.network.valve;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

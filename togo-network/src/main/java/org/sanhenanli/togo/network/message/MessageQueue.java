@@ -1,7 +1,6 @@
-package org.sanhenanli.togo.network.queue;
+package org.sanhenanli.togo.network.message;
 
-import org.sanhenanli.togo.network.model.Message;
-import org.sanhenanli.togo.network.model.PusherIdentity;
+import org.sanhenanli.togo.network.pusher.PusherIdentity;
 import org.sanhenanli.togo.network.receiver.Receiver;
 import org.sanhenanli.togo.network.tunnel.AbstractTunnel;
 

@@ -1,15 +1,19 @@
 package org.sanhenanli.togo.network.pusher;
 
+import org.sanhenanli.togo.network.business.BusinessFactory;
 import org.sanhenanli.togo.network.executor.Executor;
 import org.sanhenanli.togo.network.lock.PushLock;
-import org.sanhenanli.togo.network.model.Message;
-import org.sanhenanli.togo.network.model.PusherIdentity;
-import org.sanhenanli.togo.network.queue.MessageQueue;
+import org.sanhenanli.togo.network.message.Message;
+import org.sanhenanli.togo.network.message.MessageQueue;
 import org.sanhenanli.togo.network.receiver.Receiver;
+import org.sanhenanli.togo.network.receiver.ReceiverFactory;
 import org.sanhenanli.togo.network.recorder.PushRecorder;
+import org.sanhenanli.togo.network.tunnel.AbstractStatefulTunnel;
 import org.sanhenanli.togo.network.tunnel.AbstractTunnel;
+import org.sanhenanli.togo.network.tunnel.TunnelFactory;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -19,16 +23,22 @@ import java.util.Set;
  */
 public class StandardPusher implements Pusher {
 
-    private MessageQueue queue;
-    private PushRecorder recorder;
-    private Executor executor;
-    private PushLock lock;
+    protected MessageQueue queue;
+    protected PushRecorder recorder;
+    protected Executor executor;
+    protected PushLock lock;
+    protected ReceiverFactory receiverFactory;
+    protected TunnelFactory tunnelFactory;
+    protected BusinessFactory businessFactory;
 
-    public StandardPusher(MessageQueue queue, PushRecorder recorder, Executor executor, PushLock lock) {
+    public StandardPusher(MessageQueue queue, PushRecorder recorder, Executor executor, PushLock lock, ReceiverFactory receiverFactory, TunnelFactory tunnelFactory, BusinessFactory businessFactory) {
         this.queue = queue;
         this.recorder = recorder;
         this.executor = executor;
         this.lock = lock;
+        this.receiverFactory = receiverFactory;
+        this.tunnelFactory = tunnelFactory;
+        this.businessFactory = businessFactory;
     }
 
     @Override
@@ -39,13 +49,18 @@ public class StandardPusher implements Pusher {
 
     @Override
     public void add(Receiver receiver, Message message, AbstractTunnel tunnel, boolean head) {
-        doAdd(receiver, message, tunnel, head);
-        if (message.getPolicy().getTunnelPolicy().isOrdered()) {
-            assembleOrderedMessagePusher(receiver, tunnel).start();
-        } else if (message.getPolicy().getTunnelPolicy().isStateful()) {
-            assembleStatefulMessagePusher(receiver, tunnel).start();
-        } else {
-            assembleGeneralMessagePusher(receiver, tunnel).start();
+        List<Receiver> receivers = receiverFactory.recursiveInferiors(receiver);
+        List<AbstractTunnel> tunnels = tunnelFactory.recursiveInferiors(tunnel);
+        for (Receiver r : receivers) {
+            for (AbstractTunnel t : tunnels) {
+                if (message.getPolicy().getTunnelPolicy().isOrdered()) {
+                    assembleOrderedMessagePusher(r, t).add(message, head);
+                } else if (message.getPolicy().getTunnelPolicy().isStateful() && tunnel instanceof AbstractStatefulTunnel) {
+                    assembleStatefulMessagePusher(r, t).add(message, head);
+                } else {
+                    assembleGeneralMessagePusher(r, t).add(message, head);
+                }
+            }
         }
     }
 
@@ -60,10 +75,6 @@ public class StandardPusher implements Pusher {
         queue.reportReceipt(messageId);
     }
 
-    private void doAdd(Receiver receiver, Message message, AbstractTunnel wrappedTunnel, boolean head) {
-        queue.add(receiver, message, wrappedTunnel, head);
-    }
-
     private Set<AbstractTunnelPusher> assemblePusher(Set<PusherIdentity> pusher) {
         Set<AbstractTunnelPusher> pushers = new HashSet<>();
         pusher.forEach(p -> {
@@ -75,14 +86,14 @@ public class StandardPusher implements Pusher {
     }
 
     private OrderedMessageTunnelPusher assembleOrderedMessagePusher(Receiver receiver, AbstractTunnel tunnel) {
-        return new OrderedMessageTunnelPusher(receiver, tunnel, queue, recorder, lock, executor);
+        return new OrderedMessageTunnelPusher(receiver, tunnel, queue, recorder, lock, executor, businessFactory);
     }
 
     private StatefulMessageTunnelPusher assembleStatefulMessagePusher(Receiver receiver, AbstractTunnel tunnel) {
-        return new StatefulMessageTunnelPusher(receiver, tunnel, queue, recorder, lock, executor);
+        return new StatefulMessageTunnelPusher(receiver, tunnel, queue, recorder, lock, executor, businessFactory);
     }
 
     private GeneralMessageTunnelPusher assembleGeneralMessagePusher(Receiver receiver, AbstractTunnel tunnel) {
-        return new GeneralMessageTunnelPusher(receiver, tunnel, queue, recorder, lock, executor);
+        return new GeneralMessageTunnelPusher(receiver, tunnel, queue, recorder, lock, executor, businessFactory);
     }
 }

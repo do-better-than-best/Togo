@@ -1,4 +1,4 @@
-package org.sanhenanli.togo.network.model;
+package org.sanhenanli.togo.network.message;
 
 import org.sanhenanli.togo.network.business.Business;
 import org.sanhenanli.togo.network.policy.RetryablePushPolicy;

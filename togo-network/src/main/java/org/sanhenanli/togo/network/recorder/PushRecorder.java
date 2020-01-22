@@ -1,8 +1,8 @@
 package org.sanhenanli.togo.network.recorder;
 
 import org.sanhenanli.togo.network.business.Business;
-import org.sanhenanli.togo.network.model.Message;
-import org.sanhenanli.togo.network.model.TunnelTip;
+import org.sanhenanli.togo.network.message.Message;
+import org.sanhenanli.togo.network.tunnel.TunnelTip;
 import org.sanhenanli.togo.network.receiver.Receiver;
 import org.sanhenanli.togo.network.tunnel.AbstractTunnel;
 
@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
  */
 public interface PushRecorder {
 
-    LocalDateTime lastSuccessTime(long number, Receiver receiver, Business bizs, AbstractTunnel tunnels);
+    LocalDateTime lastSuccessTime(long number, Receiver receiver, Business biz, AbstractTunnel tunnels);
     LocalDateTime lastAttemptTime(long number, Receiver receiver, Business biz, AbstractTunnel tunnels);
     LocalDateTime lastErrorTime(long number, Receiver receivers, Business biz, AbstractTunnel tunnels);
 

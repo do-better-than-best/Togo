@@ -1,6 +1,6 @@
 package org.sanhenanli.togo.network.pusher;
 
-import org.sanhenanli.togo.network.model.Message;
+import org.sanhenanli.togo.network.message.Message;
 import org.sanhenanli.togo.network.receiver.Receiver;
 import org.sanhenanli.togo.network.tunnel.AbstractTunnel;
 
