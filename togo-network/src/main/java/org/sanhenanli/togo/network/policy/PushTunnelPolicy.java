@@ -63,4 +63,8 @@ public class PushTunnelPolicy {
     private boolean ordered;
     private long timeoutMills;
 
+    public void unableStateful() {
+        this.stateful = false;
+    }
+
 }

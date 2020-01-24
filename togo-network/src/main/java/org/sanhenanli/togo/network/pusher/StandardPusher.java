@@ -48,16 +48,19 @@ public class StandardPusher implements Pusher {
     }
 
     @Override
-    public void add(Receiver receiver, Message message, AbstractTunnel tunnel, boolean head) {
-        List<Receiver> receivers = receiverFactory.recursiveInferiors(receiver);
-        List<AbstractTunnel> tunnels = tunnelFactory.recursiveInferiors(tunnel);
+    public void add(String receiver, Message message, String tunnel, boolean head) {
+        Receiver receiverEntity = receiverFactory.getSubstanceByName(receiver);
+        AbstractTunnel tunnelEntity = tunnelFactory.getSubstanceByName(tunnel);
+        List<Receiver> receivers = receiverFactory.inferiorSubstances(receiverEntity);
+        List<AbstractTunnel> tunnels = tunnelFactory.inferiorSubstances(tunnelEntity);
         for (Receiver r : receivers) {
             for (AbstractTunnel t : tunnels) {
                 if (message.getPolicy().getTunnelPolicy().isOrdered()) {
                     assembleOrderedMessagePusher(r, t).add(message, head);
-                } else if (message.getPolicy().getTunnelPolicy().isStateful() && tunnel instanceof AbstractStatefulTunnel) {
+                } else if (message.getPolicy().getTunnelPolicy().isStateful() && tunnelEntity instanceof AbstractStatefulTunnel) {
                     assembleStatefulMessagePusher(r, t).add(message, head);
                 } else {
+                    message.unableStateful();
                     assembleGeneralMessagePusher(r, t).add(message, head);
                 }
             }
@@ -65,9 +68,11 @@ public class StandardPusher implements Pusher {
     }
 
     @Override
-    public void onConnect(AbstractTunnel tunnel, Receiver receiver) {
-        assembleOrderedMessagePusher(receiver, tunnel).start();
-        assembleStatefulMessagePusher(receiver, tunnel).start();
+    public void onConnect(String tunnel, String receiver) {
+        Receiver receiverEntity = receiverFactory.getSubstanceByName(receiver);
+        AbstractTunnel tunnelEntity = tunnelFactory.getSubstanceByName(tunnel);
+        assembleOrderedMessagePusher(receiverEntity, tunnelEntity).start();
+        assembleStatefulMessagePusher(receiverEntity, tunnelEntity).start();
     }
 
     @Override

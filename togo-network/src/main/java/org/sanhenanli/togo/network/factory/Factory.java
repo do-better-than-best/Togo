@@ -7,15 +7,13 @@ import java.util.List;
  *
  * @author zhouwenxiang
  */
-public interface Factory<T> {
+public interface Factory<T extends Group> {
 
-    List<T> recursiveInferiors(T receiver);
+    List<T> inferiorSubstances(T superior);
 
-    T superior(T receiver);
-
-    void register(T receiver, T superior);
+    void register(T inferior, T superior);
 
     boolean hasHierarchy(T superior, T inferior);
 
-    T getByName(String name);
+    T getSubstanceByName(String name);
 }

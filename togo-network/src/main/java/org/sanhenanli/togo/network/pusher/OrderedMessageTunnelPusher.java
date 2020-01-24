@@ -53,7 +53,6 @@ public class OrderedMessageTunnelPusher extends AbstractTunnelPusher {
         TunnelTip tunnelTip = push(message);
         if (tunnelTip.isOk()) {
             markTried(message);
-            recorder.recordAttempt(message);
             recorder.recordSuccess(message);
             return true;
         } else if (tunnelTip.isNotConnected() && message.getPolicy().getTunnelPolicy().isStateful()) {
@@ -61,8 +60,8 @@ public class OrderedMessageTunnelPusher extends AbstractTunnelPusher {
             return false;
         } else {
             markTried(message);
-            recorder.recordAttempt(message);
             if (message.retryable()) {
+                recorder.recordRetry(message, tunnelTip);
                 preRetry(message, tunnelTip);
                 return pushContinuously(message);
             }

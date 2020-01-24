@@ -47,7 +47,7 @@ public abstract class AbstractTunnelPusher extends PusherIdentity implements Tun
 
     @Override
     public void add(Message message, boolean head) {
-        List<Business> bizs = businessFactory.recursiveInferiors(message.getBiz());
+        List<Business> bizs = businessFactory.inferiorSubstances(message.getBiz());
         for (Business biz : bizs) {
             message.setBiz(biz);
             queue.add(receiver, message, tunnel, head);
@@ -137,7 +137,7 @@ public abstract class AbstractTunnelPusher extends PusherIdentity implements Tun
     protected void preRetry(Message message, TunnelTip tunnelTip) {
         message.getPolicy().setTunnelPolicy(message.getPolicy().getRetryPolicy().getTunnelPolicy());
         // todo retry delay factory, retry max times;
-        if (message.getPolicy().getRetryPolicy().isFollowSuggestiong() && validSuggestTime(tunnelTip.getSuggestTime())) {
+        if (message.getPolicy().getRetryPolicy().isFollowSuggestion() && validSuggestTime(tunnelTip.getSuggestTime())) {
             message.getPolicy().setTrigger(ScheduleTrigger.at(tunnelTip.getSuggestTime()));
         } else {
             message.getPolicy().setTrigger(message.getPolicy().getRetryPolicy().getTrigger());

@@ -1,14 +1,17 @@
 package org.sanhenanli.togo.network.business;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.sanhenanli.togo.network.factory.Group;
 
 /**
  * datetime 2020/1/21 14:38
  *
  * @author zhouwenxiang
  */
+@AllArgsConstructor
 @Getter
-public class Business {
+public class Business extends Group {
 
     protected String name;
 

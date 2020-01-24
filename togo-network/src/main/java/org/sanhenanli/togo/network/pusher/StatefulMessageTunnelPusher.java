@@ -59,14 +59,13 @@ public class StatefulMessageTunnelPusher extends AbstractTunnelPusher {
         TunnelTip tunnelTip = push(message);
         if (tunnelTip.isOk()) {
             markTried(message);
-            recorder.recordAttempt(message);
             recorder.recordSuccess(message);
         } else if (tunnelTip.isNotConnected()) {
             queue.add(receiver, message, tunnel, true);
         } else {
             markTried(message);
-            recorder.recordAttempt(message);
             if (message.retryable()) {
+                recorder.recordRetry(message, tunnelTip);
                 preRetry(message, tunnelTip);
                 queue.add(receiver, message, tunnel, true);
             }

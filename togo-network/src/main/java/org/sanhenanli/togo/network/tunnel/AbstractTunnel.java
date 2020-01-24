@@ -1,6 +1,7 @@
 package org.sanhenanli.togo.network.tunnel;
 
 import lombok.Getter;
+import org.sanhenanli.togo.network.factory.Group;
 import org.sanhenanli.togo.network.message.Message;
 import org.sanhenanli.togo.network.pusher.AbstractPusher;
 import org.sanhenanli.togo.network.receiver.Receiver;
@@ -11,7 +12,7 @@ import org.sanhenanli.togo.network.receiver.Receiver;
  * @author zhouwenxiang
  */
 @Getter
-public abstract class AbstractTunnel implements Tunnel {
+public abstract class AbstractTunnel extends Group implements Tunnel {
 
     protected String name;
     protected AbstractPusher pusher;

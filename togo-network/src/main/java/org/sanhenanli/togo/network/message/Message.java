@@ -28,4 +28,8 @@ public class Message {
         return policy.getRetryPolicy().getRetry() >= tryTimes.get();
     }
 
+    public void unableStateful() {
+        policy.getTunnelPolicy().unableStateful();
+        policy.getRetryPolicy().getTunnelPolicy().unableStateful();
+    }
 }

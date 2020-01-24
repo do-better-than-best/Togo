@@ -1,21 +1,26 @@
-package org.sanhenanli.togo.wrapper.message;
+package org.sanhenanli.togo.wrapper.model;
+
+import lombok.Data;
+import org.sanhenanli.togo.network.tunnel.enums.TunnelTipCauseEnum;
+import org.sanhenanli.togo.wrapper.model.enums.PushStatusEnum;
 
 import java.time.LocalDateTime;
 
 /**
- * datetime 2020/1/22 19:06
+ * datetime 2020/1/24 15:09
  *
  * @author zhouwenxiang
  */
-public class MessageWrapper {
+@Data
+public class MessagePush {
 
-    protected String messageId;
-    protected String data;
+    protected String pushId;
+    protected String detailId;
     protected String receiver;
     protected String tunnel;
     protected String biz;
+    protected Long pushOrder;
 
-    // todo 失败要重试的怎么记录: 入库, 检查同id,biz下tryTimes=0的重复;  pop哪些状态的消息:发送中的唯一id
     protected boolean stateful;
     protected boolean duplex;
     protected boolean ordered;
@@ -31,8 +36,8 @@ public class MessageWrapper {
     protected LocalDateTime retryTriggerTime;
 
     protected int tryTimes;
-    protected int status;
-    protected int cause;
+    protected PushStatusEnum status;
+    protected TunnelTipCauseEnum cause;
     protected String tip;
     protected LocalDateTime suggestTime;
 

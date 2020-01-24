@@ -13,9 +13,9 @@ public interface Pusher {
 
     void onStart();
 
-    void add(Receiver receiver, Message message, AbstractTunnel wrappedTunnel, boolean head);
+    void add(String receiver, Message message, String tunnel, boolean head);
 
-    void onConnect(AbstractTunnel wrappedTunnel, Receiver receiver);
+    void onConnect(String tunnel, String receiver);
 
     void reportReceipt(String messageId);
 

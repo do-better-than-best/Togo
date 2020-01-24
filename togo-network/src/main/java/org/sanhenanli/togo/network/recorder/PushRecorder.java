@@ -23,5 +23,5 @@ public interface PushRecorder {
 
     void recordSuccess(Message message);
 
-    void recordAttempt(Message message);
+    void recordRetry(Message message, TunnelTip tip);
 }

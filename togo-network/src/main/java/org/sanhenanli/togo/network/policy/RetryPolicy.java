@@ -13,6 +13,6 @@ import lombok.EqualsAndHashCode;
 public class RetryPolicy extends PushPolicy {
 
     private int retry;
-    private boolean followSuggestiong;
+    private boolean followSuggestion;
 
 }

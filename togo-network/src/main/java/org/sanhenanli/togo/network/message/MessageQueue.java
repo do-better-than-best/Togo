@@ -21,12 +21,6 @@ public interface MessageQueue {
 
     Set<PusherIdentity> pushersToTrigger();
 
-    void onSuccess(Message message);
-
-    void onError(Message message);
-
-    void onAttempt(Message message);
-
     void reportReceipt(String messageId);
 
     boolean consumeReceipt(String messageId);
