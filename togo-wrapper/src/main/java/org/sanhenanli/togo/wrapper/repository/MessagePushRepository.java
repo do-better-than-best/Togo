@@ -19,11 +19,7 @@ public interface MessagePushRepository {
 
     void updateMessagePushStatus(String detailId, PushStatusEnum status, TunnelTipCauseEnum cause, String tip);
 
-    LocalDateTime lastSuccessTime(long number, String receiver, String biz, String tunnel);
-
-    LocalDateTime lastAttemptTime(long number, String receiver, String biz, String tunnel);
-
-    LocalDateTime lastErrorTime(long number, String receivers, String biz, String tunnel);
+    LocalDateTime findLastNFinishTimeByReceiverAndBizAndTunnelAndStatusIn(long number, Set<String> receivers, Set<String> bizs, Set<String> tunnels, Set<PushStatusEnum> status);
 
     MessagePush findFirstByReceiverAndTunnelAndOrderedAndStatefulAndStatusInOrderByPushOrder(String receiver, String tunnel, boolean ordered, boolean stateful, Set<PushStatusEnum> status);
 

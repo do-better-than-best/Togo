@@ -5,7 +5,7 @@ package org.sanhenanli.togo.wrapper.lock;
  *
  * @author zhouwenxiang
  */
-public interface Locker {
+public interface PushLocker {
 
     boolean tryLock(String lockKey);
 

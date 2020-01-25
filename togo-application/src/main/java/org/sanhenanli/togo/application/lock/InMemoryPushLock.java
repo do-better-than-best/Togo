@@ -1,6 +1,6 @@
 package org.sanhenanli.togo.application.lock;
 
-import org.sanhenanli.togo.wrapper.lock.Locker;
+import org.sanhenanli.togo.wrapper.lock.PushLocker;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.stereotype.Component;
 
@@ -14,8 +14,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author zhouwenxiang
  */
 @Component
-@ConditionalOnMissingBean(Locker.class)
-public class InMemoryPushLock implements Locker {
+@ConditionalOnMissingBean(PushLocker.class)
+public class InMemoryPushLock implements PushLocker {
 
     private Map<String, String> lockMap;
 

@@ -11,14 +11,12 @@ import org.sanhenanli.togo.network.recorder.PushRecorder;
 import org.sanhenanli.togo.network.trigger.PushTrigger;
 import org.sanhenanli.togo.network.trigger.ScheduleTrigger;
 import org.sanhenanli.togo.network.tunnel.AbstractTunnel;
-import lombok.EqualsAndHashCode;
 
 /**
  * datetime 2020/1/22 15:50
  *
  * @author zhouwenxiang
  */
-@EqualsAndHashCode(callSuper = true)
 public class GeneralMessageTunnelPusher extends AbstractTunnelPusher {
 
     public GeneralMessageTunnelPusher(Receiver receiver, AbstractTunnel tunnel, MessageQueue queue, PushRecorder recorder, PushLock lock, Executor executor, BusinessFactory businessFactory) {

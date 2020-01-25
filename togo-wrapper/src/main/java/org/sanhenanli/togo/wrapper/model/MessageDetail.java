@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Data
 public class MessageDetail {
 
-    protected String detailId;
+    protected String id;
     protected String messageId;
     protected String data;
     protected String receiver;

@@ -10,13 +10,15 @@ import org.sanhenanli.togo.wrapper.model.enums.PushStatusEnum;
  */
 public interface MessageRepository {
 
-    void save(MessageDetail message); // 检查尝试次数
+    void save(MessageDetail message);
+
+    void updateMessageTryTimes(String id, int tryTimes);
+
+    void updateMessageStatus(String id, PushStatusEnum status);
 
     MessageDetail findOne(String id);
 
     void saveMessageReceipt(String id);
 
     boolean hasReceipt(String id);
-
-    void updateMessageStatus(String id, PushStatusEnum status);
 }

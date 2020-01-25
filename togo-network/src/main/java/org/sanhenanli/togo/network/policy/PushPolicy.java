@@ -13,4 +13,9 @@ public class PushPolicy {
 
     protected PushTunnelPolicy tunnelPolicy;
     protected PushTrigger trigger;
+
+    public PushPolicy(PushTunnelPolicy tunnelPolicy, PushTrigger trigger) {
+        this.tunnelPolicy = tunnelPolicy;
+        this.trigger = trigger;
+    }
 }

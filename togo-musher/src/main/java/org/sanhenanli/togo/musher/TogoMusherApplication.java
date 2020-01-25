@@ -1,17 +1,17 @@
-package org.sanhenanli.togo.application;
+package org.sanhenanli.togo.musher;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * datetime 2020/1/22 18:40
+ * datetime 2020/1/25 19:22
  *
  * @author zhouwenxiang
  */
 @SpringBootApplication
-public class TogoApplication {
+public class TogoMusherApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(TogoApplication.class, args);
+        SpringApplication.run(TogoMusherApplication.class, args);
     }
 }

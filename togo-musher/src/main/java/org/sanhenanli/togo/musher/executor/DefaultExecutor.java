@@ -1,4 +1,4 @@
-package org.sanhenanli.togo.application.executor;
+package org.sanhenanli.togo.musher.executor;
 
 import org.sanhenanli.togo.network.executor.Executor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -13,6 +13,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * datetime 2020/1/18 20:17
+ * todo executor实现
  *
  * @author zhouwenxiang
  */

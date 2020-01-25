@@ -12,6 +12,7 @@
         <module>togo-network</module>
         <module>togo-wrapper</module>
         <module>togo-application</module>
+        <module>togo-musher</module>
     </modules>
 
 

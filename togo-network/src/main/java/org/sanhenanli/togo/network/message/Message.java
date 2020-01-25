@@ -20,6 +20,13 @@ public class Message {
     protected RetryablePushPolicy policy;
     protected final AtomicInteger tryTimes = new AtomicInteger(0);
 
+    public Message(String id, Business biz, String data, RetryablePushPolicy policy) {
+        this.id = id;
+        this.biz = biz;
+        this.data = data;
+        this.policy = policy;
+    }
+
     public int markTried() {
         return this.tryTimes.addAndGet(1);
     }

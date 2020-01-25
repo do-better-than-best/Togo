@@ -4,8 +4,6 @@ import org.sanhenanli.togo.network.business.BusinessFactory;
 import org.sanhenanli.togo.network.executor.Executor;
 import org.sanhenanli.togo.network.lock.PushLock;
 import org.sanhenanli.togo.network.message.Message;
-import org.sanhenanli.togo.network.receiver.ReceiverFactory;
-import org.sanhenanli.togo.network.tunnel.TunnelFactory;
 import org.sanhenanli.togo.network.tunnel.TunnelTip;
 import org.sanhenanli.togo.network.message.MessageQueue;
 import org.sanhenanli.togo.network.receiver.Receiver;
@@ -14,14 +12,12 @@ import org.sanhenanli.togo.network.trigger.PushTrigger;
 import org.sanhenanli.togo.network.trigger.ScheduleTrigger;
 import org.sanhenanli.togo.network.tunnel.AbstractStatefulTunnel;
 import org.sanhenanli.togo.network.tunnel.AbstractTunnel;
-import lombok.EqualsAndHashCode;
 
 /**
  * datetime 2020/1/22 15:48
  *
  * @author zhouwenxiang
  */
-@EqualsAndHashCode(callSuper = true)
 public class StatefulMessageTunnelPusher extends AbstractTunnelPusher {
 
     public StatefulMessageTunnelPusher(Receiver receiver, AbstractTunnel tunnel, MessageQueue queue, PushRecorder recorder, PushLock lock, Executor executor, BusinessFactory businessFactory) {

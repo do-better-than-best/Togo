@@ -16,13 +16,14 @@ import org.sanhenanli.togo.network.trigger.ScheduleTrigger;
 import org.sanhenanli.togo.network.tunnel.AbstractTunnel;
 import org.sanhenanli.togo.network.tunnel.TunnelFactory;
 import org.sanhenanli.togo.network.tunnel.TunnelTip;
-import org.sanhenanli.togo.wrapper.lock.Locker;
+import org.sanhenanli.togo.wrapper.lock.PushLocker;
 import org.sanhenanli.togo.wrapper.model.MessageDetail;
 import org.sanhenanli.togo.wrapper.model.MessagePush;
 import org.sanhenanli.togo.wrapper.model.enums.PushStatusEnum;
 import org.sanhenanli.togo.wrapper.repository.*;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -32,27 +33,27 @@ import java.util.stream.Collectors;
  *
  * @author zhouwenxiang
  */
-public class StandardPushBuilder {
+public class StandardPusherBuilder {
 
     protected MessageRepository messageRepository;
     protected MessagePushRepository messagePushRepository;
-    protected Locker locker;
+    protected PushLocker pushLocker;
     protected Executor executor;
     protected ReceiverRepository receiverRepository;
     protected BusinessRepository businessRepository;
     protected TunnelRepository tunnelRepository;
 
-    public StandardPushBuilder(MessageRepository messageRepository, MessagePushRepository messagePushRepository, Locker locker, Executor executor, ReceiverRepository receiverRepository, BusinessRepository businessRepository, TunnelRepository tunnelRepository) {
+    public StandardPusherBuilder(MessageRepository messageRepository, MessagePushRepository messagePushRepository, PushLocker pushLocker, Executor executor, ReceiverRepository receiverRepository, BusinessRepository businessRepository, TunnelRepository tunnelRepository) {
         this.messageRepository = messageRepository;
         this.messagePushRepository = messagePushRepository;
-        this.locker = locker;
+        this.pushLocker = pushLocker;
         this.executor = executor;
         this.receiverRepository = receiverRepository;
         this.businessRepository = businessRepository;
         this.tunnelRepository = tunnelRepository;
     }
 
-    public StandardPusher builder() {
+    public StandardPusher build() {
         return new StandardPusher(buildMessageQueue(), buildPushRecorder(), executor, buildPushLock(), buildReceiverFactory(), buildTunnelFactory(), buildBusinessFactory());
     }
 
@@ -61,7 +62,11 @@ public class StandardPushBuilder {
             @Override
             public void add(Receiver receiver, Message message, AbstractTunnel tunnel, boolean head) {
                 MessageDetail messageDetail = buildMessageDetail(message, receiver, tunnel, head);
-                messageRepository.save(messageDetail);
+                if (messageDetail.getTryTime() != 0) {
+                    messageRepository.updateMessageTryTimes(messageDetail.getId(), messageDetail.getTryTime());
+                } else {
+                    messageRepository.save(messageDetail);
+                }
                 messagePushRepository.saveMessagePush(buildMessagePush(messageDetail));
             }
 
@@ -107,17 +112,26 @@ public class StandardPushBuilder {
         return new PushRecorder() {
             @Override
             public LocalDateTime lastSuccessTime(long number, Receiver receiver, Business biz, AbstractTunnel tunnel) {
-                return messagePushRepository.lastSuccessTime(number, receiver.getName(), biz.getName(), tunnel.getName());
+                Set<String> receivers = new HashSet<>(receiverRepository.listByGroup(receiver.getName()));
+                Set<String> bizs = new HashSet<>(businessRepository.listByGroup(biz.getName()));
+                Set<String> tunnels = new HashSet<>(tunnelRepository.listByGroup(tunnel.getName()));
+                return messagePushRepository.findLastNFinishTimeByReceiverAndBizAndTunnelAndStatusIn(number, receivers, bizs, tunnels, PushStatusEnum.succeed());
             }
 
             @Override
             public LocalDateTime lastAttemptTime(long number, Receiver receiver, Business biz, AbstractTunnel tunnel) {
-                return messagePushRepository.lastAttemptTime(number, receiver.getName(), biz.getName(), tunnel.getName());
+                Set<String> receivers = new HashSet<>(receiverRepository.listByGroup(receiver.getName()));
+                Set<String> bizs = new HashSet<>(businessRepository.listByGroup(biz.getName()));
+                Set<String> tunnels = new HashSet<>(tunnelRepository.listByGroup(tunnel.getName()));
+                return messagePushRepository.findLastNFinishTimeByReceiverAndBizAndTunnelAndStatusIn(number, receivers, bizs, tunnels, PushStatusEnum.finished());
             }
 
             @Override
             public LocalDateTime lastErrorTime(long number, Receiver receiver, Business biz, AbstractTunnel tunnel) {
-                return messagePushRepository.lastErrorTime(number, receiver.getName(), biz.getName(), tunnel.getName());
+                Set<String> receivers = new HashSet<>(receiverRepository.listByGroup(receiver.getName()));
+                Set<String> bizs = new HashSet<>(businessRepository.listByGroup(biz.getName()));
+                Set<String> tunnels = new HashSet<>(tunnelRepository.listByGroup(tunnel.getName()));
+                return messagePushRepository.findLastNFinishTimeByReceiverAndBizAndTunnelAndStatusIn(number, receivers, bizs, tunnels, PushStatusEnum.failed());
             }
 
             @Override
@@ -143,12 +157,12 @@ public class StandardPushBuilder {
         return new PushLock() {
             @Override
             public boolean tryLock(Receiver receiver, AbstractTunnel tunnel) {
-                return locker.tryLock(lockKey(receiver, tunnel));
+                return pushLocker.tryLock(lockKey(receiver, tunnel));
             }
 
             @Override
             public void unlock(Receiver receiver, AbstractTunnel tunnel) {
-                locker.unlock(lockKey(receiver, tunnel));
+                pushLocker.unlock(lockKey(receiver, tunnel));
             }
 
             private String lockKey(Receiver receiver, AbstractTunnel tunnel) {
@@ -248,9 +262,9 @@ public class StandardPushBuilder {
         MessagePush messagePush = new MessagePush();
         messagePush.setBiz(messageDetail.getBiz());
         messagePush.setCreateTime(messageDetail.getCreateTime());
-        messagePush.setDetailId(messageDetail.getDetailId());
+        messagePush.setDetailId(messageDetail.getId());
         messagePush.setDuplex(messageDetail.getPolicy().getTunnelPolicy().isDuplex());
-        messagePush.setFollowSuggestiong(messageDetail.getPolicy().getRetryPolicy().isFollowSuggestion());
+        messagePush.setFollowSuggestion(messageDetail.getPolicy().getRetryPolicy().isFollowSuggestion());
         messagePush.setOrdered(messageDetail.getPolicy().getTunnelPolicy().isOrdered());
         if (messageDetail.isHead()) {
             Long pushOrder = messagePushRepository.findMinPushOrderByReceiverAndTunnelAndStatusIsUnfinished(messageDetail.getReceiver(), messageDetail.getTunnel());
@@ -276,7 +290,7 @@ public class StandardPushBuilder {
 
     private Message buildMessage(MessageDetail messageDetail) {
         Message message = new Message();
-        message.setId(messageDetail.getDetailId());
+        message.setId(messageDetail.getId());
         message.setBiz(new Business(messageDetail.getBiz()));
         message.setData(messageDetail.getData());
         message.setPolicy(messageDetail.getPolicy());

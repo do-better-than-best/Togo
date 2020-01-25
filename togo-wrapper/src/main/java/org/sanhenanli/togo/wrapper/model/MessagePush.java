@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Data
 public class MessagePush {
 
-    protected String pushId;
+    protected String id;
     protected String detailId;
     protected String receiver;
     protected String tunnel;
@@ -32,7 +32,7 @@ public class MessagePush {
     protected boolean retryOrdered;
     protected long retryTimeoutMills;
     protected int retry;
-    protected boolean followSuggestiong;
+    protected boolean followSuggestion;
     protected LocalDateTime retryTriggerTime;
 
     protected int tryTimes;

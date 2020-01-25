@@ -12,7 +12,6 @@ import org.sanhenanli.togo.network.recorder.PushRecorder;
 import org.sanhenanli.togo.network.trigger.ScheduleTrigger;
 import org.sanhenanli.togo.network.tunnel.AbstractStatefulTunnel;
 import org.sanhenanli.togo.network.tunnel.AbstractTunnel;
-import lombok.EqualsAndHashCode;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,7 +21,6 @@ import java.util.List;
  *
  * @author zhouwenxiang
  */
-@EqualsAndHashCode(callSuper = true)
 public abstract class AbstractTunnelPusher extends PusherIdentity implements TunnelPusher {
 
     protected MessageQueue queue;
@@ -136,7 +134,6 @@ public abstract class AbstractTunnelPusher extends PusherIdentity implements Tun
 
     protected void preRetry(Message message, TunnelTip tunnelTip) {
         message.getPolicy().setTunnelPolicy(message.getPolicy().getRetryPolicy().getTunnelPolicy());
-        // todo retry delay factory, retry max times;
         if (message.getPolicy().getRetryPolicy().isFollowSuggestion() && validSuggestTime(tunnelTip.getSuggestTime())) {
             message.getPolicy().setTrigger(ScheduleTrigger.at(tunnelTip.getSuggestTime()));
         } else {
