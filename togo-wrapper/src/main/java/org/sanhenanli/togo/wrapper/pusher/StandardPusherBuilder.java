@@ -30,17 +30,39 @@ import java.util.stream.Collectors;
 
 /**
  * datetime 2020/1/24 15:40
+ * 全局推送器builder
  *
  * @author zhouwenxiang
  */
 public class StandardPusherBuilder {
 
+    /**
+     * 消息管理
+     */
     protected MessageRepository messageRepository;
+    /**
+     * 消息推送管理
+     */
     protected MessagePushRepository messagePushRepository;
+    /**
+     * 锁
+     */
     protected PushLocker pushLocker;
+    /**
+     * 任务执行器
+     */
     protected Executor executor;
+    /**
+     * 接收者管理
+     */
     protected ReceiverRepository receiverRepository;
+    /**
+     * 业务管理
+     */
     protected BusinessRepository businessRepository;
+    /**
+     * 通道管理
+     */
     protected TunnelRepository tunnelRepository;
 
     public StandardPusherBuilder(MessageRepository messageRepository, MessagePushRepository messagePushRepository, PushLocker pushLocker, Executor executor, ReceiverRepository receiverRepository, BusinessRepository businessRepository, TunnelRepository tunnelRepository) {
@@ -65,29 +87,29 @@ public class StandardPusherBuilder {
                 if (messageDetail.getTryTime() != 0) {
                     messageRepository.updateMessageTryTimes(messageDetail.getId(), messageDetail.getTryTime());
                 } else {
-                    messageRepository.save(messageDetail);
+                    messageDetail = messageRepository.save(messageDetail);
                 }
                 messagePushRepository.saveMessagePush(buildMessagePush(messageDetail));
             }
 
             @Override
             public Message popOrderedMessage(Receiver receiver, AbstractTunnel tunnel) {
-                MessagePush messagePush = messagePushRepository.findFirstByReceiverAndTunnelAndOrderedAndStatusInOrderByPushOrder(receiver.getName(), tunnel.getName(), true, PushStatusEnum.unfinished());
-                MessageDetail messageDetail = messageRepository.findOne(messagePush.getDetailId());
+                MessagePush messagePush = messagePushRepository.popByReceiverAndTunnelAndOrderedAndStatusIsUnfinishedOrderByPushOrder(receiver.getName(), tunnel.getName(), true);
+                MessageDetail messageDetail = messageRepository.findOne(messagePush.getMessageId());
                 return buildMessage(messageDetail);
             }
 
             @Override
             public Message popStatefulMessage(Receiver receiver, AbstractTunnel tunnel) {
-                MessagePush messagePush = messagePushRepository.findFirstByReceiverAndTunnelAndOrderedAndStatefulAndStatusInOrderByPushOrder(receiver.getName(), tunnel.getName(), false, true, PushStatusEnum.unfinished());
-                MessageDetail messageDetail = messageRepository.findOne(messagePush.getDetailId());
+                MessagePush messagePush = messagePushRepository.popByReceiverAndTunnelAndOrderedAndStatefulAndStatusIsUnfinishedOrderByPushOrder(receiver.getName(), tunnel.getName(), false, true);
+                MessageDetail messageDetail = messageRepository.findOne(messagePush.getMessageId());
                 return buildMessage(messageDetail);
             }
 
             @Override
             public Message popGeneralMessage(Receiver receiver, AbstractTunnel tunnel) {
-                MessagePush messagePush = messagePushRepository.findFirstByReceiverAndTunnelAndOrderedAndStatefulAndStatusInOrderByPushOrder(receiver.getName(), tunnel.getName(), false, false, PushStatusEnum.unfinished());
-                MessageDetail messageDetail = messageRepository.findOne(messagePush.getDetailId());
+                MessagePush messagePush = messagePushRepository.popByReceiverAndTunnelAndOrderedAndStatefulAndStatusIsUnfinishedOrderByPushOrder(receiver.getName(), tunnel.getName(), false, false);
+                MessageDetail messageDetail = messageRepository.findOne(messagePush.getMessageId());
                 return buildMessage(messageDetail);
             }
 
@@ -115,7 +137,7 @@ public class StandardPusherBuilder {
                 Set<String> receivers = new HashSet<>(receiverRepository.listByGroup(receiver.getName()));
                 Set<String> bizs = new HashSet<>(businessRepository.listByGroup(biz.getName()));
                 Set<String> tunnels = new HashSet<>(tunnelRepository.listByGroup(tunnel.getName()));
-                return messagePushRepository.findLastNFinishTimeByReceiverAndBizAndTunnelAndStatusIn(number, receivers, bizs, tunnels, PushStatusEnum.succeed());
+                return messagePushRepository.findRecentFinishTimeByReceiverAndBizAndTunnelAndStatusIn(number, receivers, bizs, tunnels, PushStatusEnum.succeed());
             }
 
             @Override
@@ -123,7 +145,7 @@ public class StandardPusherBuilder {
                 Set<String> receivers = new HashSet<>(receiverRepository.listByGroup(receiver.getName()));
                 Set<String> bizs = new HashSet<>(businessRepository.listByGroup(biz.getName()));
                 Set<String> tunnels = new HashSet<>(tunnelRepository.listByGroup(tunnel.getName()));
-                return messagePushRepository.findLastNFinishTimeByReceiverAndBizAndTunnelAndStatusIn(number, receivers, bizs, tunnels, PushStatusEnum.finished());
+                return messagePushRepository.findRecentFinishTimeByReceiverAndBizAndTunnelAndStatusIn(number, receivers, bizs, tunnels, PushStatusEnum.finished());
             }
 
             @Override
@@ -131,7 +153,7 @@ public class StandardPusherBuilder {
                 Set<String> receivers = new HashSet<>(receiverRepository.listByGroup(receiver.getName()));
                 Set<String> bizs = new HashSet<>(businessRepository.listByGroup(biz.getName()));
                 Set<String> tunnels = new HashSet<>(tunnelRepository.listByGroup(tunnel.getName()));
-                return messagePushRepository.findLastNFinishTimeByReceiverAndBizAndTunnelAndStatusIn(number, receivers, bizs, tunnels, PushStatusEnum.failed());
+                return messagePushRepository.findRecentFinishTimeByReceiverAndBizAndTunnelAndStatusIn(number, receivers, bizs, tunnels, PushStatusEnum.failed());
             }
 
             @Override
@@ -262,7 +284,7 @@ public class StandardPusherBuilder {
         MessagePush messagePush = new MessagePush();
         messagePush.setBiz(messageDetail.getBiz());
         messagePush.setCreateTime(messageDetail.getCreateTime());
-        messagePush.setDetailId(messageDetail.getId());
+        messagePush.setMessageId(messageDetail.getId());
         messagePush.setDuplex(messageDetail.getPolicy().getTunnelPolicy().isDuplex());
         messagePush.setFollowSuggestion(messageDetail.getPolicy().getRetryPolicy().isFollowSuggestion());
         messagePush.setOrdered(messageDetail.getPolicy().getTunnelPolicy().isOrdered());

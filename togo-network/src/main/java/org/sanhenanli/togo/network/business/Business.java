@@ -6,6 +6,7 @@ import org.sanhenanli.togo.network.factory.Group;
 
 /**
  * datetime 2020/1/21 14:38
+ * 消息所属业务
  *
  * @author zhouwenxiang
  */
@@ -13,6 +14,9 @@ import org.sanhenanli.togo.network.factory.Group;
 @Getter
 public class Business extends Group {
 
+    /**
+     * 消息所属业务名, 是业务的唯一标识
+     */
     protected String name;
 
     @Override

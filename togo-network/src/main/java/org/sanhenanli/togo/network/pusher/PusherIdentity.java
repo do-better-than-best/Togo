@@ -6,13 +6,20 @@ import lombok.Data;
 
 /**
  * datetime 2020/1/18 21:53
+ * 推送器标识
  *
  * @author zhouwenxiang
  */
 @Data
 public class PusherIdentity {
 
+    /**
+     * 接收者
+     */
     protected Receiver receiver;
+    /**
+     * 使用的通道
+     */
     protected AbstractTunnel tunnel;
 
     public PusherIdentity(Receiver receiver, AbstractTunnel tunnel) {

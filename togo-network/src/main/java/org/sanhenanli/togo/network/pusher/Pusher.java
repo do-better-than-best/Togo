@@ -6,17 +6,37 @@ import org.sanhenanli.togo.network.tunnel.AbstractTunnel;
 
 /**
  * datetime 2020/1/18 21:17
+ * 全局推送其
  *
  * @author zhouwenxiang
  */
 public interface Pusher {
 
+    /**
+     * 项目启动时调用该方法
+     */
     void onStart();
 
+    /**
+     * 添加待推消息
+     * @param receiver 接收者
+     * @param message 消息
+     * @param tunnel 使用的通道
+     * @param head 是否有限推送, true优先
+     */
     void add(String receiver, Message message, String tunnel, boolean head);
 
+    /**
+     * 接收者建立通道连接时调用该方法
+     * @param tunnel 通道名称
+     * @param receiver 接收者
+     */
     void onConnect(String tunnel, String receiver);
 
+    /**
+     * 客户端上报消息回执
+     * @param messageId 消息的唯一id
+     */
     void reportReceipt(String messageId);
 
 }

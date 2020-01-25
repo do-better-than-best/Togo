@@ -4,6 +4,7 @@ import org.sanhenanli.togo.network.factory.Factory;
 
 /**
  * datetime 2020/1/18 21:30
+ * 通道管理器
  *
  * @author zhouwenxiang
  */

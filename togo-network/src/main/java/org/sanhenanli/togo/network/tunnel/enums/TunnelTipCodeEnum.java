@@ -5,6 +5,7 @@ import lombok.Getter;
 
 /**
  * datetime 2020/1/15 17:06
+ * 推送结果枚举
  *
  * @author zhouwenxiang
  */
@@ -12,8 +13,17 @@ import lombok.Getter;
 @Getter
 public enum TunnelTipCodeEnum {
 
+    /**
+     * 未知
+     */
     UNKNOWN(1),
+    /**
+     * 成功
+     */
     OK(2),
+    /**
+     * 失败
+     */
     ERROR(3),
     ;
 

@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 
 /**
  * datetime 2020/1/16 9:59
+ * 定时推送触发器
  *
  * @author zhouwenxiang
  */
@@ -15,6 +16,9 @@ import java.time.LocalDateTime;
 @Getter
 public class ScheduleTrigger implements PushTrigger {
 
+    /**
+     * 定时
+     */
     private LocalDateTime schedule;
 
     public static ScheduleTrigger at(LocalDateTime time) {

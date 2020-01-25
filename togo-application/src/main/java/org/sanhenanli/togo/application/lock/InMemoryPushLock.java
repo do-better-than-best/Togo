@@ -10,6 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * datetime 2020/1/18 20:32
+ * 默认单机内存锁
  *
  * @author zhouwenxiang
  */

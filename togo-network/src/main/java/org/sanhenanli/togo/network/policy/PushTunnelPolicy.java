@@ -6,6 +6,7 @@ import lombok.Getter;
 
 /**
  * datetime 2020/1/16 9:30
+ * 消息在通道中的推送策略
  *
  * @author zhouwenxiang
  */
@@ -14,15 +15,18 @@ import lombok.Getter;
 public class PushTunnelPolicy {
 
     /**
+     * 立即推送
      * push instantly
      */
     public static final PushTunnelPolicy INSTANTLY = new PushTunnelPolicy(false, false, false, 0);
     /**
+     * 通道建立连接后推送
      * push when connected
      */
     public static final PushTunnelPolicy STATEFUL = new PushTunnelPolicy(true, false, false, 0);
 
     /**
+     * 推送后需要检查消息回执
      * push and check receipt
      * @param timeoutMills receipt timeout mills
      * @return policy
@@ -32,6 +36,7 @@ public class PushTunnelPolicy {
     }
 
     /**
+     * 通道连接后推送, 并且检查消息回执
      * push when connected and check receipt
      * @param timeoutMills receipt timeout mills
      * @return policy
@@ -41,6 +46,7 @@ public class PushTunnelPolicy {
     }
 
     /**
+     * 有序地推送消息, 必须检查消息回执
      * push in order
      * @param timeoutMills receipt timeout mills
      * @return policy
@@ -50,6 +56,7 @@ public class PushTunnelPolicy {
     }
 
     /**
+     * 在通道连接后有序地推送消息, 必须检查消息回执
      * push in order when connected
      * @param timeoutMills receipt timeout mills
      * @return policy
@@ -58,11 +65,29 @@ public class PushTunnelPolicy {
         return new PushTunnelPolicy(true, true, true, timeoutMills);
     }
 
+    /**
+     * 是否在连接状态推送, true是
+     */
     private boolean stateful;
+
+    /**
+     * 是否需要检查消息回执, true是
+     */
     private boolean duplex;
+
+    /**
+     * 是否有序地推送, true是
+     */
     private boolean ordered;
+
+    /**
+     * 推送后等待回执地时间, ms
+     */
     private long timeoutMills;
 
+    /**
+     * 降级为不需要连接后推送
+     */
     public void unableStateful() {
         this.stateful = false;
     }

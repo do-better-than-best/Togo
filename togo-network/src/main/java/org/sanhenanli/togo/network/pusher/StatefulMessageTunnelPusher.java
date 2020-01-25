@@ -15,6 +15,7 @@ import org.sanhenanli.togo.network.tunnel.AbstractTunnel;
 
 /**
  * datetime 2020/1/22 15:48
+ * 单人单通道有状态消息推送器
  *
  * @author zhouwenxiang
  */

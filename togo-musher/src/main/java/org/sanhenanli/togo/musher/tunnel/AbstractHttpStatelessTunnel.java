@@ -1,5 +1,6 @@
 package org.sanhenanli.togo.musher.tunnel;
 
+import org.sanhenanli.togo.network.pusher.AbstractPusher;
 import org.sanhenanli.togo.network.tunnel.AbstractStatefulTunnel;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -17,6 +18,10 @@ public abstract class AbstractHttpStatelessTunnel extends AbstractStatefulTunnel
     protected HttpMethod method;
     protected String url;
     protected HttpHeaders httpHeaders;
+
+    public AbstractHttpStatelessTunnel(String name, AbstractPusher pusher) {
+        super(name, pusher);
+    }
 
     protected abstract HttpHeaders buildHeaders(String receiver, String msg);
 

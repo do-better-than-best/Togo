@@ -1,5 +1,6 @@
 package org.sanhenanli.togo.musher.tunnel;
 
+import org.sanhenanli.togo.network.pusher.AbstractPusher;
 import org.sanhenanli.togo.network.tunnel.AbstractStatefulTunnel;
 
 /**
@@ -9,4 +10,7 @@ import org.sanhenanli.togo.network.tunnel.AbstractStatefulTunnel;
  * @author zhouwenxiang
  */
 public abstract class AbstractHttpStatefulTunnel extends AbstractStatefulTunnel {
+    public AbstractHttpStatefulTunnel(String name, AbstractPusher pusher) {
+        super(name, pusher);
+    }
 }

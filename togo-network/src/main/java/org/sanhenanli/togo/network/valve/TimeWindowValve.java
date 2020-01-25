@@ -12,10 +12,16 @@ import java.time.temporal.ChronoUnit;
 
 /**
  * datetime 2020/1/22 11:29
+ * 时间窗口推送控制阀门: 控制一段时间窗口内的推送次数
  *
  * @author zhouwenxiang
  */
 public class TimeWindowValve extends AbstractValve {
+
+    public TimeWindowValve(AbstractRule rule) {
+        super(rule);
+    }
+
     @Override
     public ValveTip control(Receiver receiver, Message message, AbstractTunnel tunnel) {
         TimeWindowRule rule = (TimeWindowRule) this.rule;

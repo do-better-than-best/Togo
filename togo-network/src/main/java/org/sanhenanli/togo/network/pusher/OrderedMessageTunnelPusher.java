@@ -4,8 +4,6 @@ import org.sanhenanli.togo.network.business.BusinessFactory;
 import org.sanhenanli.togo.network.executor.Executor;
 import org.sanhenanli.togo.network.lock.PushLock;
 import org.sanhenanli.togo.network.message.Message;
-import org.sanhenanli.togo.network.receiver.ReceiverFactory;
-import org.sanhenanli.togo.network.tunnel.TunnelFactory;
 import org.sanhenanli.togo.network.tunnel.TunnelTip;
 import org.sanhenanli.togo.network.message.MessageQueue;
 import org.sanhenanli.togo.network.receiver.Receiver;
@@ -19,6 +17,7 @@ import java.time.LocalDateTime;
 
 /**
  * datetime 2020/1/22 15:19
+ * 单人单通道有序消息推送器
  *
  * @author zhouwenxiang
  */

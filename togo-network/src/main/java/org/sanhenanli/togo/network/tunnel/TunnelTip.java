@@ -1,5 +1,6 @@
 package org.sanhenanli.togo.network.tunnel;
 
+import lombok.AccessLevel;
 import org.sanhenanli.togo.network.valve.ValveTip;
 import org.sanhenanli.togo.network.tunnel.enums.TunnelTipCauseEnum;
 import org.sanhenanli.togo.network.tunnel.enums.TunnelTipCodeEnum;
@@ -10,16 +11,29 @@ import java.time.LocalDateTime;
 
 /**
  * datetime 2020/1/15 17:04
+ * 推送结果
  *
  * @author zhouwenxiang
  */
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Data
 public class TunnelTip {
 
+    /**
+     * 推送结果码
+     */
     private TunnelTipCodeEnum code;
+    /**
+     * 推送失败的原因
+     */
     private TunnelTipCauseEnum cause;
+    /**
+     * 推送失败的描述
+     */
     private String tip;
+    /**
+     * 推送失败后的建议重试时间
+     */
     private LocalDateTime suggestTime;
 
     public static TunnelTip ok() {

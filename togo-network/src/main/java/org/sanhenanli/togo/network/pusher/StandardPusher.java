@@ -18,18 +18,20 @@ import java.util.Set;
 
 /**
  * datetime 2020/1/18 21:23
+ * 全局推送器
  *
  * @author zhouwenxiang
  */
-public class StandardPusher implements Pusher {
+public class StandardPusher extends AbstractPusher {
 
-    protected MessageQueue queue;
-    protected PushRecorder recorder;
+    /**
+     * 推送任务执行器
+     */
     protected Executor executor;
+    /**
+     * 推送锁
+     */
     protected PushLock lock;
-    protected ReceiverFactory receiverFactory;
-    protected TunnelFactory tunnelFactory;
-    protected BusinessFactory businessFactory;
 
     public StandardPusher(MessageQueue queue, PushRecorder recorder, Executor executor, PushLock lock, ReceiverFactory receiverFactory, TunnelFactory tunnelFactory, BusinessFactory businessFactory) {
         this.queue = queue;
@@ -81,7 +83,7 @@ public class StandardPusher implements Pusher {
     }
 
     private Set<AbstractTunnelPusher> assemblePusher(Set<PusherIdentity> pusher) {
-        Set<AbstractTunnelPusher> pushers = new HashSet<>();
+        Set<AbstractTunnelPusher> pushers = new HashSet<>(); // todo tunnelPusher equals hashcode
         pusher.forEach(p -> {
             pushers.add(assembleOrderedMessagePusher(p.getReceiver(), p.getTunnel()));
             pushers.add(assembleStatefulMessagePusher(p.getReceiver(), p.getTunnel()));
