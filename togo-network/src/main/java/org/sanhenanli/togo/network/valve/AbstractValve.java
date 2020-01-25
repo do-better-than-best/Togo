@@ -85,7 +85,7 @@ public abstract class AbstractValve implements Valve {
      * @return 通道
      */
     protected AbstractTunnel tunnelToControl(AbstractTunnel tunnel, RuleScopeOfTunnel ruleScopeOfTunnel) {
-        for (AbstractTunnel specificTunnel : ruleScopeOfTunnel.getSpecificTunnels()) {
+        for (AbstractTunnel specificTunnel : ruleScopeOfTunnel.getSpecificTunnels()) { // todo tunnel组管理
             if (pusher.getTunnelFactory().hasHierarchy(specificTunnel, tunnel)) {
                 return specificTunnel;
             }

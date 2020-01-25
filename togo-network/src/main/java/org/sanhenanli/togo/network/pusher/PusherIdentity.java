@@ -1,5 +1,6 @@
 package org.sanhenanli.togo.network.pusher;
 
+import lombok.AllArgsConstructor;
 import org.sanhenanli.togo.network.receiver.Receiver;
 import org.sanhenanli.togo.network.tunnel.AbstractTunnel;
 import lombok.Data;
@@ -10,6 +11,7 @@ import lombok.Data;
  *
  * @author zhouwenxiang
  */
+@AllArgsConstructor
 @Data
 public class PusherIdentity {
 
@@ -21,11 +23,6 @@ public class PusherIdentity {
      * 使用的通道
      */
     protected AbstractTunnel tunnel;
-
-    public PusherIdentity(Receiver receiver, AbstractTunnel tunnel) {
-        this.receiver = receiver;
-        this.tunnel = tunnel;
-    }
 
     @Override
     public final boolean equals(Object obj) {

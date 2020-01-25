@@ -13,6 +13,7 @@ import org.sanhenanli.togo.network.pusher.StandardPusher;
 import org.sanhenanli.togo.network.receiver.Receiver;
 import org.sanhenanli.togo.network.rule.RuleScopeOfPush;
 import org.sanhenanli.togo.network.rule.RuleScopeOfReceiver;
+import org.sanhenanli.togo.network.rule.RuleScopeOfTunnel;
 import org.sanhenanli.togo.network.rule.TimeWindowRule;
 import org.sanhenanli.togo.network.trigger.InstantlyTrigger;
 import org.sanhenanli.togo.network.valve.TimeWindowValve;
@@ -48,7 +49,8 @@ public class MessagePushConfigTest {
         messagePusher
                 .addValve(new TimeWindowValve(new TimeWindowRule()
                         .receiverScope(new RuleScopeOfReceiver(false, true, true,
-                                Collections.singletonList(new Receiver("ephe")))).pushScope(new RuleScopeOfPush(true, false, true))));
+                                Collections.singletonList(new Receiver("ephe")))).pushScope(new RuleScopeOfPush(true, false, true))
+                        .tunnelScope(new RuleScopeOfTunnel(false, false, true, Collections.singletonList("test")))));
     }
 
     @Test

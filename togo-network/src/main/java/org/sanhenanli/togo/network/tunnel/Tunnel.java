@@ -12,6 +12,7 @@ public interface Tunnel {
 
     /**
      * 执行推送
+     * @param receiver 接收者
      * @param msg 消息
      * @return 推送结果
      */

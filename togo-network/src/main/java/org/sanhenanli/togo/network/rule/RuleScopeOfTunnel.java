@@ -1,7 +1,6 @@
 package org.sanhenanli.togo.network.rule;
 
 import lombok.Getter;
-import org.sanhenanli.togo.network.tunnel.AbstractTunnel;
 
 import java.util.List;
 
@@ -19,9 +18,9 @@ public class RuleScopeOfTunnel implements RuleScope {
     protected boolean allTunnel;
     protected boolean eachTunnel;
     protected boolean specificTunnel;
-    protected List<AbstractTunnel> specificTunnels;
+    protected List<String> specificTunnels;
 
-    public RuleScopeOfTunnel(boolean allTunnel, boolean eachTunnel, boolean specificTunnel, List<AbstractTunnel> specificTunnels) {
+    public RuleScopeOfTunnel(boolean allTunnel, boolean eachTunnel, boolean specificTunnel, List<String> specificTunnels) {
         assert allTunnel || eachTunnel || specificTunnel;
         assert !specificTunnel || specificTunnels != null && !specificTunnels.isEmpty();
         this.allTunnel = allTunnel;

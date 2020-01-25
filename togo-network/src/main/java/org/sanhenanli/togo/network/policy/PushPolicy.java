@@ -1,7 +1,8 @@
 package org.sanhenanli.togo.network.policy;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import org.sanhenanli.togo.network.trigger.PushTrigger;
-import lombok.Data;
 
 /**
  * datetime 2020/1/15 17:47
@@ -9,7 +10,8 @@ import lombok.Data;
  *
  * @author zhouwenxiang
  */
-@Data
+@AllArgsConstructor
+@Getter
 public class PushPolicy {
 
     /**
@@ -22,8 +24,4 @@ public class PushPolicy {
      */
     protected PushTrigger trigger;
 
-    public PushPolicy(PushTunnelPolicy tunnelPolicy, PushTrigger trigger) {
-        this.tunnelPolicy = tunnelPolicy;
-        this.trigger = trigger;
-    }
 }

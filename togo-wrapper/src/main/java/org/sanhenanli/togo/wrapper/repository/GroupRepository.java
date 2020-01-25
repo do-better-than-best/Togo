@@ -22,7 +22,7 @@ public interface GroupRepository {
      * @param inferior 实体/下级
      * @param superior 属组/上级
      */
-    void register(String inferior, String superior);
+    void register(String inferior, String superior); // todo 直接注册实体对象, 不通过名字
 
     /**
      * 判断是否有上下级关系

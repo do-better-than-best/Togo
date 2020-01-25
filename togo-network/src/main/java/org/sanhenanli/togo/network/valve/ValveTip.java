@@ -1,7 +1,8 @@
 package org.sanhenanli.togo.network.valve;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
 
@@ -11,8 +12,8 @@ import java.time.LocalDateTime;
  *
  * @author zhouwenxiang
  */
-@AllArgsConstructor
-@Data
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Getter
 public class ValveTip {
 
     /**

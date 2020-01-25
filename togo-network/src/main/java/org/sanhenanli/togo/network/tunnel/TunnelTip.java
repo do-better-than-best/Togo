@@ -1,11 +1,11 @@
 package org.sanhenanli.togo.network.tunnel;
 
 import lombok.AccessLevel;
+import lombok.Getter;
 import org.sanhenanli.togo.network.valve.ValveTip;
 import org.sanhenanli.togo.network.tunnel.enums.TunnelTipCauseEnum;
 import org.sanhenanli.togo.network.tunnel.enums.TunnelTipCodeEnum;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 
 import java.time.LocalDateTime;
 
@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
  * @author zhouwenxiang
  */
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-@Data
+@Getter
 public class TunnelTip {
 
     /**

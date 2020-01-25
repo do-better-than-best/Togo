@@ -1,8 +1,6 @@
 package org.sanhenanli.togo.network.pusher;
 
 import org.sanhenanli.togo.network.message.Message;
-import org.sanhenanli.togo.network.receiver.Receiver;
-import org.sanhenanli.togo.network.tunnel.AbstractTunnel;
 
 /**
  * datetime 2020/1/18 21:17
