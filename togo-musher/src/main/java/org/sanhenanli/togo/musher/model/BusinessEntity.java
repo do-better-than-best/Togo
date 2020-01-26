@@ -5,5 +5,5 @@ package org.sanhenanli.togo.musher.model;
  *
  * @author zhouwenxiang
  */
-public class BusinessEntity extends GroupEntity {
+public class BusinessEntity extends TagEntity {
 }

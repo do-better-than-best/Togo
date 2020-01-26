@@ -8,7 +8,7 @@ import lombok.Data;
  * @author zhouwenxiang
  */
 @Data
-public class GroupEntity {
+public class TagEntity {
 
     protected String id;
     protected String name;

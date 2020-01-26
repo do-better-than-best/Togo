@@ -1,9 +1,11 @@
 package org.sanhenanli.togo.musher.model;
 
 /**
- * datetime 2020/1/25 18:43
+ * datetime 2020/1/26 14:17
  *
  * @author zhouwenxiang
  */
-public class TunnelEntity extends GroupEntity {
+public interface Tip {
+
+    String getContent();
 }

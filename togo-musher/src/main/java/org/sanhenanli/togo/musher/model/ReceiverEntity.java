@@ -5,5 +5,5 @@ package org.sanhenanli.togo.musher.model;
  *
  * @author zhouwenxiang
  */
-public class ReceiverEntity extends GroupEntity {
+public class ReceiverEntity extends TagEntity {
 }

@@ -1,7 +1,6 @@
 package org.sanhenanli.togo.network.pusher;
 
 import lombok.EqualsAndHashCode;
-import lombok.extern.slf4j.Slf4j;
 import org.sanhenanli.togo.network.business.Business;
 import org.sanhenanli.togo.network.business.BusinessFactory;
 import org.sanhenanli.togo.network.executor.Executor;
@@ -25,7 +24,6 @@ import java.util.List;
  * @author zhouwenxiang
  */
 @EqualsAndHashCode(callSuper = true)
-@Slf4j
 public abstract class AbstractTunnelPusher extends PusherIdentity implements TunnelPusher {
 
     /**
@@ -188,13 +186,12 @@ public abstract class AbstractTunnelPusher extends PusherIdentity implements Tun
      */
     protected void markTried(Message message) {
         int tryTimes = message.markTried();
-        log.debug("messageId:{}, tryTimes:{}", message.getId(), tryTimes); // todo provided log depd
     }
 
     /**
      * 重试前处理消息: 修改推送策略
      * @param message 消息
-     * @param tunnelTip
+     * @param tunnelTip 推送结果
      */
     protected void preRetry(Message message, TunnelTip tunnelTip) {
         message.getPolicy().setTunnelPolicy(message.getPolicy().getRetryPolicy().getTunnelPolicy());
