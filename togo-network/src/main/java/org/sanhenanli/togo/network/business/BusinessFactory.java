@@ -1,6 +1,6 @@
 package org.sanhenanli.togo.network.business;
 
-import org.sanhenanli.togo.network.factory.Factory;
+import org.sanhenanli.togo.network.factory.TagFactory;
 
 /**
  * datetime 2020/1/22 10:37
@@ -8,6 +8,6 @@ import org.sanhenanli.togo.network.factory.Factory;
  *
  * @author zhouwenxiang
  */
-public interface BusinessFactory extends Factory<Business> {
+public interface BusinessFactory extends TagFactory<Business> {
 
 }

@@ -1,7 +1,6 @@
 package org.sanhenanli.togo.network.rule;
 
 import lombok.Getter;
-import org.sanhenanli.togo.network.business.Business;
 
 import java.util.List;
 
@@ -34,9 +33,9 @@ public class RuleScopeOfBiz implements RuleScope {
     /**
      * 特定业务列表
      */
-    protected List<Business> specificBizs;
+    protected List<String> specificBizs;
 
-    public RuleScopeOfBiz(boolean allBiz, boolean eachBiz, boolean specificBiz, List<Business> specificBizs) {
+    public RuleScopeOfBiz(boolean allBiz, boolean eachBiz, boolean specificBiz, List<String> specificBizs) {
         assert allBiz || eachBiz || specificBiz;
         assert !specificBiz || specificBizs != null && !specificBizs.isEmpty();
         this.allBiz = allBiz;

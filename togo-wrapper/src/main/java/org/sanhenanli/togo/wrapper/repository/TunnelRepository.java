@@ -8,7 +8,7 @@ import org.sanhenanli.togo.network.tunnel.AbstractTunnel;
  *
  * @author zhouwenxiang
  */
-public interface TunnelRepository extends GroupRepository {
+public interface TunnelRepository extends TagRepository<AbstractTunnel> {
 
     /**
      * 根据name获取通道实体

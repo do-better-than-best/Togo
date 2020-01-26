@@ -134,25 +134,25 @@ public class StandardPusherBuilder {
         return new PushRecorder() {
             @Override
             public LocalDateTime lastSuccessTime(long number, Receiver receiver, Business biz, AbstractTunnel tunnel) {
-                Set<String> receivers = new HashSet<>(receiverRepository.listByGroup(receiver.getName()));
-                Set<String> bizs = new HashSet<>(businessRepository.listByGroup(biz.getName()));
-                Set<String> tunnels = new HashSet<>(tunnelRepository.listByGroup(tunnel.getName()));
+                Set<String> receivers = new HashSet<>(receiverRepository.substanceNames(receiver.getName()));
+                Set<String> bizs = new HashSet<>(businessRepository.substanceNames(biz.getName()));
+                Set<String> tunnels = new HashSet<>(tunnelRepository.substanceNames(tunnel.getName()));
                 return messagePushRepository.findRecentFinishTimeByReceiverAndBizAndTunnelAndStatusIn(number, receivers, bizs, tunnels, PushStatusEnum.succeed());
             }
 
             @Override
             public LocalDateTime lastAttemptTime(long number, Receiver receiver, Business biz, AbstractTunnel tunnel) {
-                Set<String> receivers = new HashSet<>(receiverRepository.listByGroup(receiver.getName()));
-                Set<String> bizs = new HashSet<>(businessRepository.listByGroup(biz.getName()));
-                Set<String> tunnels = new HashSet<>(tunnelRepository.listByGroup(tunnel.getName()));
+                Set<String> receivers = new HashSet<>(receiverRepository.substanceNames(receiver.getName()));
+                Set<String> bizs = new HashSet<>(businessRepository.substanceNames(biz.getName()));
+                Set<String> tunnels = new HashSet<>(tunnelRepository.substanceNames(tunnel.getName()));
                 return messagePushRepository.findRecentFinishTimeByReceiverAndBizAndTunnelAndStatusIn(number, receivers, bizs, tunnels, PushStatusEnum.finished());
             }
 
             @Override
             public LocalDateTime lastErrorTime(long number, Receiver receiver, Business biz, AbstractTunnel tunnel) {
-                Set<String> receivers = new HashSet<>(receiverRepository.listByGroup(receiver.getName()));
-                Set<String> bizs = new HashSet<>(businessRepository.listByGroup(biz.getName()));
-                Set<String> tunnels = new HashSet<>(tunnelRepository.listByGroup(tunnel.getName()));
+                Set<String> receivers = new HashSet<>(receiverRepository.substanceNames(receiver.getName()));
+                Set<String> bizs = new HashSet<>(businessRepository.substanceNames(biz.getName()));
+                Set<String> tunnels = new HashSet<>(tunnelRepository.substanceNames(tunnel.getName()));
                 return messagePushRepository.findRecentFinishTimeByReceiverAndBizAndTunnelAndStatusIn(number, receivers, bizs, tunnels, PushStatusEnum.failed());
             }
 
@@ -196,18 +196,18 @@ public class StandardPusherBuilder {
     private ReceiverFactory buildReceiverFactory() {
         return new ReceiverFactory() {
             @Override
-            public List<Receiver> inferiorSubstances(Receiver superior) {
-                return receiverRepository.listByGroup(superior.getName()).stream().map(Receiver::new).collect(Collectors.toList());
+            public List<Receiver> substances(String tag) {
+                return receiverRepository.substanceNames(tag).stream().map(Receiver::new).collect(Collectors.toList());
             }
 
             @Override
-            public void register(Receiver inferior, Receiver superior) {
-                receiverRepository.register(inferior.getName(), superior.getName());
+            public void register(Receiver substance, String tag) {
+                receiverRepository.register(substance, tag);
             }
 
             @Override
-            public boolean hasHierarchy(Receiver superior, Receiver inferior) {
-                return receiverRepository.hasHierarchy(superior.getName(), inferior.getName());
+            public boolean nameInTag(String tag, String name) {
+                return receiverRepository.nameInTag(tag, name);
             }
 
             @Override
@@ -220,18 +220,18 @@ public class StandardPusherBuilder {
     private BusinessFactory buildBusinessFactory() {
         return new BusinessFactory() {
             @Override
-            public List<Business> inferiorSubstances(Business superior) {
-                return businessRepository.listByGroup(superior.getName()).stream().map(Business::new).collect(Collectors.toList());
+            public List<Business> substances(String tag) {
+                return businessRepository.substanceNames(tag).stream().map(Business::new).collect(Collectors.toList());
             }
 
             @Override
-            public void register(Business inferior, Business superior) {
-                businessRepository.register(inferior.getName(), superior.getName());
+            public void register(Business substance, String tag) {
+                businessRepository.register(substance, tag);
             }
 
             @Override
-            public boolean hasHierarchy(Business superior, Business inferior) {
-                return businessRepository.hasHierarchy(superior.getName(), inferior.getName());
+            public boolean nameInTag(String tag, String name) {
+                return businessRepository.nameInTag(tag, name);
             }
 
             @Override
@@ -244,18 +244,18 @@ public class StandardPusherBuilder {
     private TunnelFactory buildTunnelFactory() {
         return new TunnelFactory() {
             @Override
-            public List<AbstractTunnel> inferiorSubstances(AbstractTunnel superior) {
-                return tunnelRepository.listByGroup(superior.getName()).stream().map(this::getSubstanceByName).collect(Collectors.toList());
+            public List<AbstractTunnel> substances(String tag) {
+                return tunnelRepository.substanceNames(tag).stream().map(this::getSubstanceByName).collect(Collectors.toList());
             }
 
             @Override
-            public void register(AbstractTunnel inferior, AbstractTunnel superior) {
-                tunnelRepository.register(inferior.getName(), superior.getName());
+            public void register(AbstractTunnel substance, String tag) {
+                tunnelRepository.register(substance, tag);
             }
 
             @Override
-            public boolean hasHierarchy(AbstractTunnel superior, AbstractTunnel inferior) {
-                return tunnelRepository.hasHierarchy(superior.getName(), inferior.getName());
+            public boolean nameInTag(String tag, String name) {
+                return tunnelRepository.nameInTag(tag, name);
             }
 
             @Override

@@ -25,7 +25,7 @@ public class PusherIdentity {
     protected AbstractTunnel tunnel;
 
     @Override
-    public final boolean equals(Object obj) {
+    public boolean equals(Object obj) {
         if (this == obj) {
             return true;
         }
@@ -37,7 +37,7 @@ public class PusherIdentity {
     }
 
     @Override
-    public final int hashCode() {
+    public int hashCode() {
         return this.receiver.hashCode() + this.tunnel.hashCode();
     }
 }

@@ -1,8 +1,8 @@
 package org.sanhenanli.togo.network.tunnel;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import org.sanhenanli.togo.network.factory.Group;
-import org.sanhenanli.togo.network.factory.enums.GroupLevelEnum;
+import org.sanhenanli.togo.network.factory.Name;
 import org.sanhenanli.togo.network.message.Message;
 import org.sanhenanli.togo.network.pusher.AbstractPusher;
 import org.sanhenanli.togo.network.receiver.Receiver;
@@ -13,40 +13,25 @@ import org.sanhenanli.togo.network.receiver.Receiver;
  *
  * @author zhouwenxiang
  */
+@EqualsAndHashCode(callSuper = true)
 @Getter
-public abstract class AbstractTunnel extends Group implements Tunnel {
+public abstract class AbstractTunnel extends Name implements Tunnel {
 
-    /**
-     * 通道唯一标识
-     */
-    protected String name;
     /**
      * 注册到推送器
      */
     protected AbstractPusher pusher;
 
     public AbstractTunnel(String name, AbstractPusher pusher) {
-        this.name = name;
+        super(name);
         this.pusher = pusher;
-        this.level = GroupLevelEnum.SUBSTANCE;
     }
 
+    /**
+     * 执行推送: 有状态推送需检查连接状态
+     * @param receiver 接收者
+     * @param msg 消息
+     * @return 推送结果
+     */
     public abstract TunnelTip push(Receiver receiver, Message msg);
-
-    @Override
-    public final boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (null == obj || getClass() != obj.getClass()) {
-            return false;
-        }
-        AbstractTunnel o = (AbstractTunnel) obj;
-        return this.name != null && this.name.equals(o.name);
-    }
-
-    @Override
-    public final int hashCode() {
-        return this.name.hashCode();
-    }
 }

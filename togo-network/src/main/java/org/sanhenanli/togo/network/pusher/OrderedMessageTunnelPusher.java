@@ -1,5 +1,6 @@
 package org.sanhenanli.togo.network.pusher;
 
+import lombok.EqualsAndHashCode;
 import org.sanhenanli.togo.network.business.BusinessFactory;
 import org.sanhenanli.togo.network.executor.Executor;
 import org.sanhenanli.togo.network.lock.PushLock;
@@ -21,6 +22,7 @@ import java.time.LocalDateTime;
  *
  * @author zhouwenxiang
  */
+@EqualsAndHashCode(callSuper = true)
 public class OrderedMessageTunnelPusher extends AbstractTunnelPusher {
 
     public OrderedMessageTunnelPusher(Receiver receiver, AbstractTunnel tunnel, MessageQueue queue, PushRecorder recorder, PushLock lock, Executor executor, BusinessFactory businessFactory) {

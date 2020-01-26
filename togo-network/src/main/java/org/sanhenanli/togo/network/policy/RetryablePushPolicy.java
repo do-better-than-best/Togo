@@ -2,6 +2,7 @@ package org.sanhenanli.togo.network.policy;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.Setter;
 import org.sanhenanli.togo.network.trigger.PushTrigger;
 
 /**
@@ -12,6 +13,7 @@ import org.sanhenanli.togo.network.trigger.PushTrigger;
  */
 @EqualsAndHashCode(callSuper = true)
 @Getter
+@Setter
 public class RetryablePushPolicy extends PushPolicy {
 
     /**

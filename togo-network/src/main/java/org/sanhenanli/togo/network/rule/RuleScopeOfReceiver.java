@@ -1,7 +1,6 @@
 package org.sanhenanli.togo.network.rule;
 
 import lombok.Getter;
-import org.sanhenanli.togo.network.receiver.Receiver;
 
 import java.util.List;
 
@@ -31,9 +30,9 @@ public class RuleScopeOfReceiver implements RuleScope {
      * 是否适用特定接收者
      */
     protected boolean specificReceiver;
-    protected List<Receiver> specificReceivers;
+    protected List<String> specificReceivers;
 
-    public RuleScopeOfReceiver(boolean allReceiver, boolean eachReceiver, boolean specificReceiver, List<Receiver> specificReceivers) {
+    public RuleScopeOfReceiver(boolean allReceiver, boolean eachReceiver, boolean specificReceiver, List<String> specificReceivers) {
         assert allReceiver || eachReceiver || specificReceiver;
         assert !specificReceiver || specificReceivers != null && !specificReceivers.isEmpty();
         this.allReceiver = allReceiver;

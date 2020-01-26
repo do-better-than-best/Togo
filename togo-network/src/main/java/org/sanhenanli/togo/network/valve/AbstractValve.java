@@ -1,14 +1,11 @@
 package org.sanhenanli.togo.network.valve;
 
-import org.sanhenanli.togo.network.business.Business;
 import org.sanhenanli.togo.network.message.Message;
 import org.sanhenanli.togo.network.pusher.AbstractPusher;
-import org.sanhenanli.togo.network.receiver.Receiver;
 import org.sanhenanli.togo.network.rule.AbstractRule;
 import org.sanhenanli.togo.network.rule.RuleScopeOfBiz;
 import org.sanhenanli.togo.network.rule.RuleScopeOfReceiver;
 import org.sanhenanli.togo.network.rule.RuleScopeOfTunnel;
-import org.sanhenanli.togo.network.tunnel.AbstractTunnel;
 
 /**
  * datetime 2020/1/21 13:44
@@ -54,9 +51,9 @@ public abstract class AbstractValve implements Valve {
      * @param ruleScopeOfBiz 规则描述
      * @return 业务
      */
-    protected Business bizToControl(Message msg, RuleScopeOfBiz ruleScopeOfBiz) {
-        for (Business specificBiz : ruleScopeOfBiz.getSpecificBizs()) {
-            if (pusher.getBusinessFactory().hasHierarchy(specificBiz, msg.getBiz())) {
+    protected String bizToControl(Message msg, RuleScopeOfBiz ruleScopeOfBiz) {
+        for (String specificBiz : ruleScopeOfBiz.getSpecificBizs()) {
+            if (pusher.getBusinessFactory().nameInTag(specificBiz, msg.getBiz().getName())) {
                 return specificBiz;
             }
         }
@@ -69,9 +66,9 @@ public abstract class AbstractValve implements Valve {
      * @param ruleScopeOfReceiver 规则描述
      * @return 接收者
      */
-    protected Receiver receiverToControl(Receiver receiver, RuleScopeOfReceiver ruleScopeOfReceiver) {
-        for (Receiver specificReceiver : ruleScopeOfReceiver.getSpecificReceivers()) {
-            if (pusher.getReceiverFactory().hasHierarchy(specificReceiver, receiver)) {
+    protected String receiverToControl(String receiver, RuleScopeOfReceiver ruleScopeOfReceiver) {
+        for (String specificReceiver : ruleScopeOfReceiver.getSpecificReceivers()) {
+            if (pusher.getReceiverFactory().nameInTag(specificReceiver, receiver)) {
                 return specificReceiver;
             }
         }
@@ -84,9 +81,9 @@ public abstract class AbstractValve implements Valve {
      * @param ruleScopeOfTunnel 规则描述
      * @return 通道
      */
-    protected AbstractTunnel tunnelToControl(AbstractTunnel tunnel, RuleScopeOfTunnel ruleScopeOfTunnel) {
-        for (AbstractTunnel specificTunnel : ruleScopeOfTunnel.getSpecificTunnels()) { // todo tunnel组管理
-            if (pusher.getTunnelFactory().hasHierarchy(specificTunnel, tunnel)) {
+    protected String tunnelToControl(String tunnel, RuleScopeOfTunnel ruleScopeOfTunnel) {
+        for (String specificTunnel : ruleScopeOfTunnel.getSpecificTunnels()) {
+            if (pusher.getTunnelFactory().nameInTag(specificTunnel, tunnel)) {
                 return specificTunnel;
             }
         }

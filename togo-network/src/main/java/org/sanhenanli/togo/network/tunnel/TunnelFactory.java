@@ -1,6 +1,6 @@
 package org.sanhenanli.togo.network.tunnel;
 
-import org.sanhenanli.togo.network.factory.Factory;
+import org.sanhenanli.togo.network.factory.TagFactory;
 
 /**
  * datetime 2020/1/18 21:30
@@ -8,5 +8,5 @@ import org.sanhenanli.togo.network.factory.Factory;
  *
  * @author zhouwenxiang
  */
-public interface TunnelFactory extends Factory<AbstractTunnel> {
+public interface TunnelFactory extends TagFactory<AbstractTunnel> {
 }

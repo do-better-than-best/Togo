@@ -2,6 +2,7 @@ package org.sanhenanli.togo.network.policy;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 import org.sanhenanli.togo.network.trigger.PushTrigger;
 
 /**
@@ -12,6 +13,7 @@ import org.sanhenanli.togo.network.trigger.PushTrigger;
  */
 @AllArgsConstructor
 @Getter
+@Setter
 public class PushPolicy {
 
     /**

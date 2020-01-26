@@ -51,15 +51,13 @@ public class StandardPusher extends AbstractPusher {
 
     @Override
     public void add(String receiver, Message message, String tunnel, boolean head) {
-        Receiver receiverEntity = receiverFactory.getSubstanceByName(receiver);
-        AbstractTunnel tunnelEntity = tunnelFactory.getSubstanceByName(tunnel);
-        List<Receiver> receivers = receiverFactory.inferiorSubstances(receiverEntity);
-        List<AbstractTunnel> tunnels = tunnelFactory.inferiorSubstances(tunnelEntity);
+        List<Receiver> receivers = receiverFactory.substances(receiver);
+        List<AbstractTunnel> tunnels = tunnelFactory.substances(tunnel);
         for (Receiver r : receivers) {
             for (AbstractTunnel t : tunnels) {
                 if (message.getPolicy().getTunnelPolicy().isOrdered()) {
                     assembleOrderedMessagePusher(r, t).add(message, head);
-                } else if (message.getPolicy().getTunnelPolicy().isStateful() && tunnelEntity instanceof AbstractStatefulTunnel) {
+                } else if (message.getPolicy().getTunnelPolicy().isStateful() && t instanceof AbstractStatefulTunnel) {
                     assembleStatefulMessagePusher(r, t).add(message, head);
                 } else {
                     message.unableStateful();
@@ -83,7 +81,7 @@ public class StandardPusher extends AbstractPusher {
     }
 
     private Set<AbstractTunnelPusher> assemblePusher(Set<PusherIdentity> pusher) {
-        Set<AbstractTunnelPusher> pushers = new HashSet<>(); // todo tunnelPusher equals hashcode
+        Set<AbstractTunnelPusher> pushers = new HashSet<>();
         pusher.forEach(p -> {
             pushers.add(assembleOrderedMessagePusher(p.getReceiver(), p.getTunnel()));
             pushers.add(assembleStatefulMessagePusher(p.getReceiver(), p.getTunnel()));

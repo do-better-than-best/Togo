@@ -1,5 +1,6 @@
 package org.sanhenanli.togo.network.pusher;
 
+import lombok.EqualsAndHashCode;
 import lombok.extern.slf4j.Slf4j;
 import org.sanhenanli.togo.network.business.Business;
 import org.sanhenanli.togo.network.business.BusinessFactory;
@@ -23,6 +24,7 @@ import java.util.List;
  *
  * @author zhouwenxiang
  */
+@EqualsAndHashCode(callSuper = true)
 @Slf4j
 public abstract class AbstractTunnelPusher extends PusherIdentity implements TunnelPusher {
 
@@ -63,7 +65,7 @@ public abstract class AbstractTunnelPusher extends PusherIdentity implements Tun
 
     @Override
     public void add(Message message, boolean head) {
-        List<Business> bizs = businessFactory.inferiorSubstances(message.getBiz());
+        List<Business> bizs = businessFactory.substances(message.getBiz().getName());
         for (Business biz : bizs) {
             message.setBiz(biz);
             queue.add(receiver, message, tunnel, head);

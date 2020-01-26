@@ -10,7 +10,6 @@ import org.sanhenanli.togo.network.policy.PushTunnelPolicy;
 import org.sanhenanli.togo.network.policy.RetryPolicy;
 import org.sanhenanli.togo.network.policy.RetryablePushPolicy;
 import org.sanhenanli.togo.network.pusher.StandardPusher;
-import org.sanhenanli.togo.network.receiver.Receiver;
 import org.sanhenanli.togo.network.rule.RuleScopeOfPush;
 import org.sanhenanli.togo.network.rule.RuleScopeOfReceiver;
 import org.sanhenanli.togo.network.rule.RuleScopeOfTunnel;
@@ -41,15 +40,14 @@ public class MessagePushConfigTest {
     @Before
     public void before() {
         // 添加一个通道
-        String name = "test-stateless";
-        TestStatelessTunnel tunnel = new TestStatelessTunnel(name, messagePusher);
-        tunnelRepository.register(name, "test");
+        TestStatelessTunnel tunnel = new TestStatelessTunnel("test-stateless", messagePusher);
+        tunnelRepository.register(tunnel, "test");
 
         // 添加控制阀门
         messagePusher
                 .addValve(new TimeWindowValve(new TimeWindowRule()
                         .receiverScope(new RuleScopeOfReceiver(false, true, true,
-                                Collections.singletonList(new Receiver("ephe")))).pushScope(new RuleScopeOfPush(true, false, true))
+                                Collections.singletonList("ephe"))).pushScope(new RuleScopeOfPush(true, false, true))
                         .tunnelScope(new RuleScopeOfTunnel(false, false, true, Collections.singletonList("test")))));
     }
 
