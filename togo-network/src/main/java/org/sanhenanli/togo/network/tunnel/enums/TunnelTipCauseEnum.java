@@ -35,4 +35,13 @@ public enum TunnelTipCauseEnum {
      * 原因code
      */
     private int cause;
+
+    public static TunnelTipCauseEnum getByCause(int cause) {
+        for (TunnelTipCauseEnum value : TunnelTipCauseEnum.values()) {
+            if (value.cause == cause) {
+                return value;
+            }
+        }
+        return null;
+    }
 }

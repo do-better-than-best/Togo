@@ -1,5 +1,6 @@
 package org.sanhenanli.togo.network.rule;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
@@ -8,6 +9,7 @@ import lombok.Getter;
  *
  * @author zhouwenxiang
  */
+@AllArgsConstructor
 @Getter
 public class TimeGapRule extends AbstractRule implements RuleWithDuration {
 

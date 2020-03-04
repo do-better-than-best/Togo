@@ -1,5 +1,6 @@
 package org.sanhenanli.togo.network.rule;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -9,6 +10,7 @@ import lombok.ToString;
  *
  * @author zhouwenxiang
  */
+@AllArgsConstructor
 @ToString
 @Getter
 public class TimeWindowRule extends AbstractRule implements RuleWithQuota, RuleWithDuration {

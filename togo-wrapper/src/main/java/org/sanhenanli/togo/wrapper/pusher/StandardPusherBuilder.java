@@ -79,7 +79,7 @@ public class StandardPusherBuilder {
         return new StandardPusher(buildMessageQueue(), buildPushRecorder(), executor, buildPushLock(), buildReceiverFactory(), buildTunnelFactory(), buildBusinessFactory());
     }
 
-    private MessageQueue buildMessageQueue() {
+    protected MessageQueue buildMessageQueue() {
         return new MessageQueue() {
             @Override
             public void add(Receiver receiver, Message message, AbstractTunnel tunnel, boolean head) {
@@ -130,7 +130,7 @@ public class StandardPusherBuilder {
         };
     }
 
-    private PushRecorder buildPushRecorder() {
+    protected PushRecorder buildPushRecorder() {
         return new PushRecorder() {
             @Override
             public LocalDateTime lastSuccessTime(long number, Receiver receiver, Business biz, AbstractTunnel tunnel) {
@@ -175,7 +175,7 @@ public class StandardPusherBuilder {
         };
     }
 
-    private PushLock buildPushLock() {
+    protected PushLock buildPushLock() {
         return new PushLock() {
             @Override
             public boolean tryLock(Receiver receiver, AbstractTunnel tunnel) {
@@ -193,7 +193,7 @@ public class StandardPusherBuilder {
         };
     }
 
-    private ReceiverFactory buildReceiverFactory() {
+    protected ReceiverFactory buildReceiverFactory() {
         return new ReceiverFactory() {
             @Override
             public List<Receiver> substances(String tag) {
@@ -217,7 +217,7 @@ public class StandardPusherBuilder {
         };
     }
 
-    private BusinessFactory buildBusinessFactory() {
+    protected BusinessFactory buildBusinessFactory() {
         return new BusinessFactory() {
             @Override
             public List<Business> substances(String tag) {
@@ -241,7 +241,7 @@ public class StandardPusherBuilder {
         };
     }
 
-    private TunnelFactory buildTunnelFactory() {
+    protected TunnelFactory buildTunnelFactory() {
         return new TunnelFactory() {
             @Override
             public List<AbstractTunnel> substances(String tag) {
@@ -265,7 +265,7 @@ public class StandardPusherBuilder {
         };
     }
 
-    private MessageDetail buildMessageDetail(Message message, Receiver receiver, AbstractTunnel tunnel, boolean head) {
+    protected MessageDetail buildMessageDetail(Message message, Receiver receiver, AbstractTunnel tunnel, boolean head) {
         MessageDetail messageDetail = new MessageDetail();
         messageDetail.setMessageId(message.getId());
         messageDetail.setBiz(message.getBiz().getName());
@@ -280,7 +280,7 @@ public class StandardPusherBuilder {
         return messageDetail;
     }
 
-    private MessagePush buildMessagePush(MessageDetail messageDetail) {
+    protected MessagePush buildMessagePush(MessageDetail messageDetail) {
         MessagePush messagePush = new MessagePush();
         messagePush.setBiz(messageDetail.getBiz());
         messagePush.setCreateTime(messageDetail.getCreateTime());
@@ -290,7 +290,7 @@ public class StandardPusherBuilder {
         messagePush.setOrdered(messageDetail.getPolicy().getTunnelPolicy().isOrdered());
         if (messageDetail.isHead()) {
             Long pushOrder = messagePushRepository.findMinPushOrderByReceiverAndTunnelAndStatusIsUnfinished(messageDetail.getReceiver(), messageDetail.getTunnel());
-            messagePush.setPushOrder(pushOrder == null ? null : pushOrder - 1);
+            messagePush.setPushOrder(pushOrder == null ? null : pushOrder - 1); // 优化
         }
         messagePush.setReceiver(messageDetail.getReceiver());
         messagePush.setRetry(messageDetail.getPolicy().getRetryPolicy().getRetry());
@@ -310,12 +310,11 @@ public class StandardPusherBuilder {
         return messagePush;
     }
 
-    private Message buildMessage(MessageDetail messageDetail) {
-        Message message = new Message();
-        message.setId(messageDetail.getId());
-        message.setBiz(new Business(messageDetail.getBiz()));
-        message.setData(messageDetail.getData());
-        message.setPolicy(messageDetail.getPolicy());
-        return message;
+    protected Message buildMessage(MessageDetail messageDetail) {
+        return new Message(
+                messageDetail.getId(),
+                new Business(messageDetail.getBiz()),
+                messageDetail.getData(),
+                messageDetail.getPolicy());
     }
 }
