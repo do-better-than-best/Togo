@@ -9,6 +9,7 @@ import org.sanhenanli.togo.network.valve.AbstractValve;
 import lombok.Getter;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -57,6 +58,10 @@ public abstract class AbstractPusher implements Pusher {
         valve.bindPusher(this);
         this.valves.add(valve);
         return this;
+    }
+
+    public List<AbstractValve> getValves() {
+        return valves == null ? Collections.emptyList() : valves;
     }
 
 }

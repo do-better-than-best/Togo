@@ -10,7 +10,7 @@ import lombok.Getter;
  *
  * @author zhouwenxiang
  */
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor
 @Getter
 public class PushTunnelPolicy {
 

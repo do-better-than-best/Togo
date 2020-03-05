@@ -19,18 +19,12 @@ public interface MessageRepository {
     MessageDetail save(MessageDetail message);
 
     /**
-     * 更新消息的尝试次数
-     * @param id 消息唯一id
-     * @param tryTimes 尝试次数
-     */
-    void updateMessageTryTimes(String id, int tryTimes);
-
-    /**
-     * 更新消息的推送状态
+     * 更新消息的推送状态和尝试次数
      * @param id 消息唯一id
      * @param status 推送状态
+     * @param tryTimes 尝试次数
      */
-    void updateMessageStatus(String id, PushStatusEnum status);
+    void updateMessageStatusAndTryTimes(String id, PushStatusEnum status, int tryTimes);
 
     /**
      * 查询消息详情
@@ -41,9 +35,10 @@ public interface MessageRepository {
 
     /**
      * 保存消息回执: 即更新消息的回执时间
-     * @param id 消息唯一id
+     * @param messageId 业务方消息id
+     * @param biz 业务
      */
-    void saveMessageReceipt(String id);
+    void saveMessageReceipt(String messageId, String biz);
 
     /**
      * 查询消息回执: 即判断消息是否有回执时间

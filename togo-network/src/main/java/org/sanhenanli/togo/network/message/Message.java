@@ -52,6 +52,14 @@ public class Message {
     }
 
     /**
+     * 初始化已尝试次数
+     * @param triedTimes 已尝试次数
+     */
+    public void initTried(int triedTimes) {
+        this.tryTimes.set(triedTimes);
+    }
+
+    /**
      * 判断是否可以重试
      * @return true可以重试, false不可以
      */

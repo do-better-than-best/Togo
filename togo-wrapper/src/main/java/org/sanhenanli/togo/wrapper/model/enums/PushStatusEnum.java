@@ -33,6 +33,10 @@ public enum PushStatusEnum {
      * 推送失败
      */
     FAILED(4),
+    /**
+     * 推送失败并可重试
+     */
+    RETRYING(5)
     ;
 
     private int status;
@@ -81,6 +85,7 @@ public enum PushStatusEnum {
         Set<PushStatusEnum> result = new HashSet<>(4);
         result.add(SUCCESS);
         result.add(FAILED);
+        result.add(RETRYING);
         return result;
     }
 }

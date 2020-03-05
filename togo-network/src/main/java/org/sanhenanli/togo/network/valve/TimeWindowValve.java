@@ -51,7 +51,7 @@ public class TimeWindowValve extends AbstractValve {
                 }
             }
         }
-        return null;
+        return ValveTip.ok();
     }
 
     @Override

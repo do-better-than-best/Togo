@@ -55,9 +55,10 @@ public interface MessageQueue {
 
     /**
      * 客户端上报收到消息的回执
-     * @param messageId 消息的唯一id
+     * @param messageId 业务方消息id
+     * @param biz 业务
      */
-    void reportReceipt(String messageId);
+    void reportReceipt(String messageId, String biz);
 
     /**
      * 查看消息是否有回执

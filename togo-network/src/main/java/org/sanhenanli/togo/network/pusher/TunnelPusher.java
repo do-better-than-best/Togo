@@ -43,8 +43,9 @@ public interface TunnelPusher {
 
     /**
      * 客户端上报收到消息的回执
-     * @param id 消息唯一id
+     * @param id 业务方消息id
+     * @param biz 业务
      */
-    void reportReceipt(String id);
+    void reportReceipt(String id, String biz);
 
 }

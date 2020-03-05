@@ -76,8 +76,8 @@ public class StandardPusher extends AbstractPusher {
     }
 
     @Override
-    public void reportReceipt(String messageId) {
-        queue.reportReceipt(messageId);
+    public void reportReceipt(String messageId, String biz) {
+        queue.reportReceipt(messageId, biz);
     }
 
     private Set<AbstractTunnelPusher> assemblePusher(Set<PusherIdentity> pusher) {

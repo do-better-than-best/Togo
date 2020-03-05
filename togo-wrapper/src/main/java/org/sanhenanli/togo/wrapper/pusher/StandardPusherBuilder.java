@@ -84,17 +84,24 @@ public class StandardPusherBuilder {
             @Override
             public void add(Receiver receiver, Message message, AbstractTunnel tunnel, boolean head) {
                 MessageDetail messageDetail = buildMessageDetail(message, receiver, tunnel, head);
-                if (messageDetail.getTryTime() != 0) {
-                    messageRepository.updateMessageTryTimes(messageDetail.getId(), messageDetail.getTryTime());
+                if (messageDetail.getTryTimes() != 0) {
+                    // 是重试逻辑, id系统转化
+                    messageDetail.setMessageId(null);
+                    messageDetail.setId(message.getId());
                 } else {
                     messageDetail = messageRepository.save(messageDetail);
                 }
-                messagePushRepository.saveMessagePush(buildMessagePush(messageDetail));
+                if (messageDetail != null) {
+                    messagePushRepository.saveMessagePush(buildMessagePush(messageDetail));
+                }
             }
 
             @Override
             public Message popOrderedMessage(Receiver receiver, AbstractTunnel tunnel) {
                 MessagePush messagePush = messagePushRepository.popByReceiverAndTunnelAndOrderedAndStatusIsUnfinishedOrderByPushOrder(receiver.getName(), tunnel.getName(), true);
+                if (messagePush == null) {
+                    return null;
+                }
                 MessageDetail messageDetail = messageRepository.findOne(messagePush.getMessageId());
                 return buildMessage(messageDetail);
             }
@@ -102,6 +109,9 @@ public class StandardPusherBuilder {
             @Override
             public Message popStatefulMessage(Receiver receiver, AbstractTunnel tunnel) {
                 MessagePush messagePush = messagePushRepository.popByReceiverAndTunnelAndOrderedAndStatefulAndStatusIsUnfinishedOrderByPushOrder(receiver.getName(), tunnel.getName(), false, true);
+                if (messagePush == null) {
+                    return null;
+                }
                 MessageDetail messageDetail = messageRepository.findOne(messagePush.getMessageId());
                 return buildMessage(messageDetail);
             }
@@ -109,6 +119,9 @@ public class StandardPusherBuilder {
             @Override
             public Message popGeneralMessage(Receiver receiver, AbstractTunnel tunnel) {
                 MessagePush messagePush = messagePushRepository.popByReceiverAndTunnelAndOrderedAndStatefulAndStatusIsUnfinishedOrderByPushOrder(receiver.getName(), tunnel.getName(), false, false);
+                if (messagePush == null) {
+                    return null;
+                }
                 MessageDetail messageDetail = messageRepository.findOne(messagePush.getMessageId());
                 return buildMessage(messageDetail);
             }
@@ -119,8 +132,8 @@ public class StandardPusherBuilder {
             }
 
             @Override
-            public void reportReceipt(String messageId) {
-                messageRepository.saveMessageReceipt(messageId);
+            public void reportReceipt(String messageId, String biz) {
+                messageRepository.saveMessageReceipt(messageId, biz);
             }
 
             @Override
@@ -158,19 +171,20 @@ public class StandardPusherBuilder {
 
             @Override
             public void recordError(Message message, TunnelTip tip) {
+                messageRepository.updateMessageStatusAndTryTimes(message.getId(), PushStatusEnum.FAILED, message.getTryTimes().get());
                 messagePushRepository.updateMessagePushStatus(message.getId(), PushStatusEnum.FAILED, tip.getCause(), tip.getTip());
-                messageRepository.updateMessageStatus(message.getId(), PushStatusEnum.FAILED);
             }
 
             @Override
             public void recordSuccess(Message message) {
+                messageRepository.updateMessageStatusAndTryTimes(message.getId(), PushStatusEnum.SUCCESS, message.getTryTimes().get());
                 messagePushRepository.updateMessagePushStatus(message.getId(), PushStatusEnum.SUCCESS, null, null);
-                messageRepository.updateMessageStatus(message.getId(), PushStatusEnum.SUCCESS);
             }
 
             @Override
             public void recordRetry(Message message, TunnelTip tip) {
-                messagePushRepository.updateMessagePushStatus(message.getId(), PushStatusEnum.FAILED, tip.getCause(), tip.getTip());
+                messageRepository.updateMessageStatusAndTryTimes(message.getId(), PushStatusEnum.RETRYING, message.getTryTimes().get());
+                messagePushRepository.updateMessagePushStatus(message.getId(), PushStatusEnum.RETRYING, tip.getCause(), tip.getTip());
             }
         };
     }
@@ -272,7 +286,7 @@ public class StandardPusherBuilder {
         messageDetail.setCreateTime(LocalDateTime.now());
         messageDetail.setData(message.getData());
         messageDetail.setHead(head);
-        messageDetail.setTryTime(message.getTryTimes().get());
+        messageDetail.setTryTimes(message.getTryTimes().get());
         messageDetail.setPolicy(message.getPolicy());
         messageDetail.setReceiver(receiver.getName());
         messageDetail.setStatus(PushStatusEnum.CREATED);
@@ -290,7 +304,7 @@ public class StandardPusherBuilder {
         messagePush.setOrdered(messageDetail.getPolicy().getTunnelPolicy().isOrdered());
         if (messageDetail.isHead()) {
             Long pushOrder = messagePushRepository.findMinPushOrderByReceiverAndTunnelAndStatusIsUnfinished(messageDetail.getReceiver(), messageDetail.getTunnel());
-            messagePush.setPushOrder(pushOrder == null ? null : pushOrder - 1); // 优化
+            messagePush.setPushOrder(pushOrder == null ? Long.MAX_VALUE : pushOrder - 1); // todo 事务优化
         }
         messagePush.setReceiver(messageDetail.getReceiver());
         messagePush.setRetry(messageDetail.getPolicy().getRetryPolicy().getRetry());
@@ -305,16 +319,18 @@ public class StandardPusherBuilder {
         messagePush.setTimeoutMills(messageDetail.getPolicy().getTunnelPolicy().getTimeoutMills());
         PushTrigger pushTrigger = messageDetail.getPolicy().getTrigger();
         messagePush.setTriggerTime(pushTrigger instanceof ScheduleTrigger ? ((ScheduleTrigger) pushTrigger).getSchedule() : null);
-        messagePush.setTryTimes(messageDetail.getTryTime());
+        messagePush.setTryTimes(messageDetail.getTryTimes());
         messagePush.setTunnel(messageDetail.getTunnel());
         return messagePush;
     }
 
     protected Message buildMessage(MessageDetail messageDetail) {
-        return new Message(
+        Message message = new Message(
                 messageDetail.getId(),
                 new Business(messageDetail.getBiz()),
                 messageDetail.getData(),
                 messageDetail.getPolicy());
+        message.initTried(messageDetail.getTryTimes());
+        return message;
     }
 }

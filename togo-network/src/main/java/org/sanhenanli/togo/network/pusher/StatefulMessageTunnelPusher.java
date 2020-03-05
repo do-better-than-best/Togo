@@ -67,8 +67,9 @@ public class StatefulMessageTunnelPusher extends AbstractTunnelPusher {
                 recorder.recordRetry(message, tunnelTip);
                 preRetry(message, tunnelTip);
                 queue.add(receiver, message, tunnel, true);
+            } else {
+                recorder.recordError(message, tunnelTip);
             }
-            recorder.recordError(message, tunnelTip);
         }
         return true;
     }

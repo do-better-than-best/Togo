@@ -23,7 +23,7 @@ public interface MessagePushRepository {
     void saveMessagePush(MessagePush messagePush);
 
     /**
-     * 更新推送的状态: 寻找该消息id下的最近一次未完成推送, 修改其状态
+     * 更新推送的状态: 寻找该消息id下的最近一次未完成推送, 修改其状态和结束时间
      * @param messageId 消息唯一id
      * @param status 状态
      * @param cause 原因
@@ -43,7 +43,7 @@ public interface MessagePushRepository {
     LocalDateTime findRecentFinishTimeByReceiverAndBizAndTunnelAndStatusIn(long number, Set<String> receivers, Set<String> bizs, Set<String> tunnels, Set<PushStatusEnum> status);
 
     /**
-     * 查找第一个待推, 并修改状态为推送中
+     * 查找第一个待推, 并修改状态为推送中, 记录开始时间
      * @param receiver 接受者
      * @param tunnel 通道
      * @param ordered 是否有序推送
@@ -53,7 +53,7 @@ public interface MessagePushRepository {
     MessagePush popByReceiverAndTunnelAndOrderedAndStatefulAndStatusIsUnfinishedOrderByPushOrder(String receiver, String tunnel, boolean ordered, boolean stateful);
 
     /**
-     * 查找第一个待推, 并修改状态为推送中
+     * 查找第一个待推, 并修改状态为推送中, 记录开始时间
      * @param receiver 接受者
      * @param tunnel 通道
      * @param ordered 是否有序推送

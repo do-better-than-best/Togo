@@ -72,26 +72,34 @@ public abstract class AbstractTunnelPusher extends PusherIdentity implements Tun
     }
 
     @Override
-    public void reportReceipt(String id) {
-        queue.reportReceipt(id);
+    public void reportReceipt(String id, String biz) {
+        queue.reportReceipt(id, biz);
     }
 
     @Override
     public void pushContinuously() {
         boolean getLock = false;
+        boolean waitingRetry = true;
         try {
             getLock = lock.tryLock(receiver, tunnel);
             if (getLock) {
                 while (true) {
                     Message message = pop();
-                    if (message == null) {
+                    if (message == null && waitingRetry) {
+                        waitingRetry = false;
+                        Thread.sleep(1000);
+                        continue;
+                    } else if (message == null) {
                         break;
                     }
+                    waitingRetry = true;
                     if (!pushContinuously(message)) {
                         break;
                     }
                 }
             }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         } finally {
             if (getLock) {
                 lock.unlock(receiver, tunnel);

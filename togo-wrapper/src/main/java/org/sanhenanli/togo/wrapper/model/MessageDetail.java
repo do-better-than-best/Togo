@@ -46,7 +46,7 @@ public class MessageDetail {
     /**
      * 尝试次数
      */
-    protected int tryTime;
+    protected int tryTimes;
     /**
      * 推送策略
      */
