@@ -10,6 +10,7 @@ import org.sanhenanli.togo.network.receiver.ReceiverFactory;
 import org.sanhenanli.togo.network.recorder.PushRecorder;
 import org.sanhenanli.togo.network.tunnel.AbstractStatefulTunnel;
 import org.sanhenanli.togo.network.tunnel.AbstractTunnel;
+import org.sanhenanli.togo.network.tunnel.StatefulTunnel;
 import org.sanhenanli.togo.network.tunnel.TunnelFactory;
 
 import java.util.HashSet;
@@ -65,6 +66,15 @@ public class StandardPusher extends AbstractPusher {
                 }
             }
         }
+    }
+
+    @Override
+    public boolean connected(String tunnel, String receiver) {
+        AbstractTunnel tunnelEntity = tunnelFactory.getSubstanceByName(tunnel);
+        if (tunnelEntity instanceof StatefulTunnel) {
+            return ((StatefulTunnel) tunnelEntity).connected(receiverFactory.getSubstanceByName(receiver));
+        }
+        return false;
     }
 
     @Override

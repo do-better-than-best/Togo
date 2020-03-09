@@ -25,6 +25,14 @@ public interface Pusher {
     void add(String receiver, Message message, String tunnel, boolean head);
 
     /**
+     * 通道是否已连接
+     * @param tunnel 通道
+     * @param receiver 接收者
+     * @return true已连接
+     */
+    boolean connected(String tunnel, String receiver);
+
+    /**
      * 接收者建立通道连接时调用该方法
      * @param tunnel 通道名称
      * @param receiver 接收者
