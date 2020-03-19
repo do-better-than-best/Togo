@@ -147,25 +147,25 @@ public class StandardPusherBuilder {
         return new PushRecorder() {
             @Override
             public LocalDateTime lastSuccessTime(long number, Receiver receiver, Business biz, AbstractTunnel tunnel) {
-                Set<String> receivers = new HashSet<>(receiverRepository.substanceNames(receiver.getName()));
-                Set<String> bizs = new HashSet<>(businessRepository.substanceNames(biz.getName()));
-                Set<String> tunnels = new HashSet<>(tunnelRepository.substanceNames(tunnel.getName()));
+                Set<String> receivers = receiver == null ? null : new HashSet<>(receiverRepository.substanceNames(receiver.getName()));
+                Set<String> bizs = biz == null ? null : new HashSet<>(businessRepository.substanceNames(biz.getName()));
+                Set<String> tunnels = tunnel == null ? null : new HashSet<>(tunnelRepository.substanceNames(tunnel.getName()));
                 return messagePushRepository.findRecentFinishTimeByReceiverAndBizAndTunnelAndStatusIn(number, receivers, bizs, tunnels, PushStatusEnum.succeed());
             }
 
             @Override
             public LocalDateTime lastAttemptTime(long number, Receiver receiver, Business biz, AbstractTunnel tunnel) {
-                Set<String> receivers = new HashSet<>(receiverRepository.substanceNames(receiver.getName()));
-                Set<String> bizs = new HashSet<>(businessRepository.substanceNames(biz.getName()));
-                Set<String> tunnels = new HashSet<>(tunnelRepository.substanceNames(tunnel.getName()));
+                Set<String> receivers = receiver == null ? null : new HashSet<>(receiverRepository.substanceNames(receiver.getName()));
+                Set<String> bizs = biz == null ? null : new HashSet<>(businessRepository.substanceNames(biz.getName()));
+                Set<String> tunnels = tunnel == null ? null : new HashSet<>(tunnelRepository.substanceNames(tunnel.getName()));
                 return messagePushRepository.findRecentFinishTimeByReceiverAndBizAndTunnelAndStatusIn(number, receivers, bizs, tunnels, PushStatusEnum.finished());
             }
 
             @Override
             public LocalDateTime lastErrorTime(long number, Receiver receiver, Business biz, AbstractTunnel tunnel) {
-                Set<String> receivers = new HashSet<>(receiverRepository.substanceNames(receiver.getName()));
-                Set<String> bizs = new HashSet<>(businessRepository.substanceNames(biz.getName()));
-                Set<String> tunnels = new HashSet<>(tunnelRepository.substanceNames(tunnel.getName()));
+                Set<String> receivers = receiver == null ? null : new HashSet<>(receiverRepository.substanceNames(receiver.getName()));
+                Set<String> bizs = biz == null ? null : new HashSet<>(businessRepository.substanceNames(biz.getName()));
+                Set<String> tunnels = tunnel == null ? null : new HashSet<>(tunnelRepository.substanceNames(tunnel.getName()));
                 return messagePushRepository.findRecentFinishTimeByReceiverAndBizAndTunnelAndStatusIn(number, receivers, bizs, tunnels, PushStatusEnum.failed());
             }
 
