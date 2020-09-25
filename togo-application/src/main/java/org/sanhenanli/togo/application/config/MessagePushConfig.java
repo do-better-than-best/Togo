@@ -1,5 +1,7 @@
 package org.sanhenanli.togo.application.config;
 
+import org.sanhenanli.togo.application.lock.InMemoryPushLock;
+import org.sanhenanli.togo.application.repository.InMemoryTunnelRepository;
 import org.sanhenanli.togo.network.executor.Executor;
 import org.sanhenanli.togo.network.pusher.StandardPusher;
 import org.sanhenanli.togo.wrapper.lock.PushLocker;
@@ -25,14 +27,19 @@ public class MessagePushConfig {
     @Autowired
     protected Executor pushExecutor;
     @Autowired
-    protected PushLocker pushLocker;
-    @Autowired
     protected ReceiverRepository receiverRepository;
     @Autowired
     protected BusinessRepository businessRepository;
-    @Autowired
-    protected TunnelRepository tunnelRepository;
 
+    @Bean
+    public PushLocker pushLocker() {
+        return new InMemoryPushLock();
+    }
+
+    @Bean
+    public TunnelRepository tunnelRepository() {
+        return new InMemoryTunnelRepository();
+    }
 
     /**
      * 配置标准推送器
@@ -43,11 +50,11 @@ public class MessagePushConfig {
         return new StandardPusherBuilder(
                 messageRepository,
                 messagePushRepository,
-                pushLocker,
+                pushLocker(),
                 pushExecutor,
                 receiverRepository,
                 businessRepository,
-                tunnelRepository
+                tunnelRepository()
         ).build();
     }
 

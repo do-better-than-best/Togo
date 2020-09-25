@@ -2,14 +2,11 @@ package org.sanhenanli.togo.application.repository;
 
 import org.sanhenanli.togo.network.tunnel.AbstractTunnel;
 import org.sanhenanli.togo.wrapper.repository.TunnelRepository;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.stereotype.Repository;
 
-import javax.annotation.PostConstruct;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * datetime 2020/1/26 13:39
@@ -17,18 +14,10 @@ import java.util.Map;
  *
  * @author zhouwenxiang
  */
-@Repository
-@ConditionalOnMissingBean(TunnelRepository.class)
 public class InMemoryTunnelRepository implements TunnelRepository {
 
-    private Map<String, AbstractTunnel> tunnelMap;
-    private Map<String, List<String>> tagNameMap;
-
-    @PostConstruct
-    public void init() {
-        tunnelMap = new HashMap<>(8);
-        tagNameMap = new HashMap<>(4);
-    }
+    private final Map<String, AbstractTunnel> tunnelMap = new ConcurrentHashMap<>(8);
+    private final Map<String, List<String>> tagNameMap = new ConcurrentHashMap<>(4);
 
     @Override
     public AbstractTunnel getByName(String name) {
