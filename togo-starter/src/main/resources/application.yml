@@ -1,0 +1,22 @@
+server:
+  servlet:
+    # 根路径
+    context-path: /togo
+  tomcat:
+    # 开启tomcat access log
+    accesslog:
+      enabled: true
+      directory: /home/togo/@build.finalName@-${spring.profiles.active}/logs
+      pattern: "%{X-Forwarded-For}i %l %u %t '%r' %s %b %I %D"
+  use-forward-headers: true
+
+
+spring:
+  profiles:
+    active: @profileActive@
+  application:
+    name: togo
+
+# 日志路径
+logging:
+  path: /home/togo/@build.finalName@-${spring.profiles.active}/logs

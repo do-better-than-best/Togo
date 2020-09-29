@@ -15,6 +15,6 @@ import lombok.ToString;
 @Getter
 public class TimeWindowRule extends AbstractRule implements RuleWithQuota, RuleWithDuration {
 
-    protected long mills;
+    protected long seconds;
     protected long quota;
 }

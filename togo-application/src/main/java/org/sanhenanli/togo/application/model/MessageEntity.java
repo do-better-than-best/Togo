@@ -3,8 +3,8 @@ package org.sanhenanli.togo.application.model;
 import com.alibaba.fastjson.JSONObject;
 import lombok.Data;
 import org.sanhenanli.togo.network.policy.RetryablePushPolicy;
-import org.sanhenanli.togo.wrapper.model.MessageDetail;
-import org.sanhenanli.togo.wrapper.model.enums.PushStatusEnum;
+import org.sanhenanli.togo.api.model.MessageDetail;
+import org.sanhenanli.togo.api.model.enums.PushStatusEnum;
 import org.springframework.beans.BeanUtils;
 
 import java.time.LocalDateTime;

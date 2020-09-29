@@ -62,23 +62,47 @@ public abstract class AbstractTunnelPusher extends PusherIdentity implements Tun
     }
 
     @Override
+    public void preRepush() {
+        boolean getLock = false;
+        try {
+            getLock = lock.tryLock(receiver, tunnel);
+            if (getLock) {
+                rollback();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (getLock) {
+                lock.unlock(receiver, tunnel);
+            }
+        }
+    }
+
+    @Override
     public void add(Message message, boolean head) {
         List<Business> bizs = businessFactory.substances(message.getBiz().getName());
         for (Business biz : bizs) {
             message.setBiz(biz);
             queue.add(receiver, message, tunnel, head);
         }
-        start();
+        if (message.getPolicy().getTrigger() instanceof ScheduleTrigger) {
+            // 如果是定时消息, push线程定时启动
+            LocalDateTime scheduleTime = ((ScheduleTrigger) message.getPolicy().getTrigger()).getSchedule();
+            executor.executeOnSchedule(this::start, scheduleTime);
+        } else {
+            start();
+        }
     }
 
     @Override
-    public void reportReceipt(String id, String biz) {
-        queue.reportReceipt(id, biz);
+    public void reportReceipt(String id, Receiver receiver, AbstractTunnel tunnel, Business biz) {
+        queue.reportReceipt(id, receiver, tunnel, biz);
     }
 
     @Override
     public void pushContinuously() {
         boolean getLock = false;
+        // 消息队列为空后, 等待1s看是否有新消息入列, 如果没有则此消息推送线程关闭
         boolean waitingRetry = true;
         try {
             getLock = lock.tryLock(receiver, tunnel);
@@ -98,7 +122,7 @@ public abstract class AbstractTunnelPusher extends PusherIdentity implements Tun
                     }
                 }
             }
-        } catch (InterruptedException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         } finally {
             if (getLock) {
@@ -112,6 +136,13 @@ public abstract class AbstractTunnelPusher extends PusherIdentity implements Tun
      * @return 消息
      */
     protected abstract Message pop();
+
+    /**
+     * 回滚pushing状态的消息为create
+     */
+    protected void rollback() {
+        queue.rollback(receiver, tunnel);
+    }
 
     /**
      * 推送一条消息
@@ -136,11 +167,17 @@ public abstract class AbstractTunnelPusher extends PusherIdentity implements Tun
         String id = message.getId();
         long timeout = message.getPolicy().getTunnelPolicy().getTimeoutMills();
         long start = System.currentTimeMillis();
-        for (long now = start, step = 100; now - start < timeout; step *= 1.1, now += step) { // todo 优化等待receipt
+        for (long now = start, step = 100; now - start < timeout; step *= 1.2) {
             if (queue.consumeReceipt(id)) {
                 // find receipt
                 return TunnelTip.ok();
             }
+            try {
+                Thread.sleep(step);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            now = System.currentTimeMillis();
         }
         return TunnelTip.noReceipt();
     }

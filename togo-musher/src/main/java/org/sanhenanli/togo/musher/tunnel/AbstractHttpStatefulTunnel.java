@@ -5,7 +5,7 @@ import org.sanhenanli.togo.network.tunnel.AbstractStatefulTunnel;
 
 /**
  * datetime 2020/1/25 18:41
- * 通过http调用的有状态通道 todo 可以搭一个websocket当http通道测试
+ * 通过http调用的有状态通道, 例如一个通过http调用的websocket服务
  *
  * @author zhouwenxiang
  */

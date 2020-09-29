@@ -1,9 +1,10 @@
 package org.sanhenanli.togo.application.repository;
 
 import org.sanhenanli.togo.network.tunnel.AbstractTunnel;
-import org.sanhenanli.togo.wrapper.repository.TunnelRepository;
+import org.sanhenanli.togo.api.repository.TunnelRepository;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -33,10 +34,12 @@ public class InMemoryTunnelRepository implements TunnelRepository {
     public void register(AbstractTunnel substance, String tag) {
         tunnelMap.put(substance.getName(), substance);
         if (tag != null) {
-            if (tagNameMap.containsKey(tag)) {
+            if (!tagNameMap.containsKey(tag)) {
                 tagNameMap.put(tag, new ArrayList<>(2));
             }
             tagNameMap.get(tag).add(substance.getName());
+        } else {
+            tagNameMap.put(substance.getName(), Collections.singletonList(substance.getName()));
         }
     }
 

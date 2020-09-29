@@ -5,7 +5,7 @@ import org.sanhenanli.togo.network.tunnel.AbstractStatefulTunnel;
 
 /**
  * datetime 2020/1/25 18:42
- * sdk通道, 例阿里云短信sdk, 个推sdk
+ * sdk有状态通道, 例个推sdk
  *
  * @author zhouwenxiang
  */

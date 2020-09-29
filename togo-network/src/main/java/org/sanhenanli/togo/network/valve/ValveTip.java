@@ -19,22 +19,21 @@ public class ValveTip {
     /**
      * 是否阻止此次推送, true是
      */
-    private boolean block;
+    private final boolean block;
     /**
      * 阻止推送的原因描述
      */
-    private String tip;
+    private final String tip;
     /**
      * 阻止推送后给出的建议推送时间
      */
-    private LocalDateTime suggestTime;
+    private final LocalDateTime suggestTime;
 
     public static ValveTip ok() {
         return new ValveTip(false, null, null);
     }
 
     public static ValveTip block(String tip, LocalDateTime suggestTime) {
-        assert suggestTime == null || suggestTime.isBefore(LocalDateTime.now());
         return new ValveTip(true, tip, suggestTime);
     }
 

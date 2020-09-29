@@ -38,7 +38,8 @@ public class OrderedMessageTunnelPusher extends AbstractTunnelPusher {
     public boolean pushContinuously(Message message) {
         PushTrigger trigger = message.getPolicy().getTrigger();
         if (trigger instanceof ScheduleTrigger) {
-            try { // todo 优化定时有序消息
+            try {
+                // 定时有序消息的推送延迟
                 Thread.sleep(Duration.between(LocalDateTime.now(), ((ScheduleTrigger) trigger).getSchedule()).toMillis());
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -62,6 +63,8 @@ public class OrderedMessageTunnelPusher extends AbstractTunnelPusher {
             if (message.retryable()) {
                 recorder.recordRetry(message, tunnelTip);
                 preRetry(message, tunnelTip);
+                queue.add(receiver, message, tunnel, true);
+                // 有序推送直接重试
                 return pushContinuously(message);
             }
             recorder.recordError(message, tunnelTip);

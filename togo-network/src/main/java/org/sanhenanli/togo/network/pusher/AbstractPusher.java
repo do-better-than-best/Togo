@@ -60,6 +60,15 @@ public abstract class AbstractPusher implements Pusher {
         return this;
     }
 
+    /**
+     * 删除推送控制阀门
+     * @param valve 阀门
+     * @return true/false
+     */
+    public boolean removeValve(AbstractValve valve) {
+        return this.valves.remove(valve);
+    }
+
     public List<AbstractValve> getValves() {
         return valves == null ? Collections.emptyList() : valves;
     }

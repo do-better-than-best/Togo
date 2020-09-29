@@ -9,8 +9,9 @@ package org.sanhenanli.togo.network.rule;
 public interface RuleWithDuration {
 
     /**
-     * 获取时长 ms
-     * @return ms
+     * 获取时长 s
+     * 小于1s的规则会丢失精度, 所以直接要求规则粒度大于等于秒
+     * @return s
      */
-    long getMills();
+    long getSeconds();
 }

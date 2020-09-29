@@ -1,5 +1,6 @@
 package org.sanhenanli.togo.network.pusher;
 
+import org.sanhenanli.togo.network.business.Business;
 import org.sanhenanli.togo.network.business.BusinessFactory;
 import org.sanhenanli.togo.network.executor.Executor;
 import org.sanhenanli.togo.network.lock.PushLock;
@@ -47,7 +48,11 @@ public class StandardPusher extends AbstractPusher {
     @Override
     public void onStart() {
         Set<PusherIdentity> pushers = queue.pushersToTrigger();
-        assemblePusher(pushers).forEach(AbstractTunnelPusher::start);
+        assemblePusher(pushers).forEach(pusher -> {
+            // 没有消息推送线程的receiver*tunnel, 修改其pushing状态的消息为create状态
+            pusher.preRepush();
+            pusher.start();
+        });
     }
 
     @Override
@@ -86,8 +91,11 @@ public class StandardPusher extends AbstractPusher {
     }
 
     @Override
-    public void reportReceipt(String messageId, String biz) {
-        queue.reportReceipt(messageId, biz);
+    public void reportReceipt(String messageId, String receiver, String tunnel, String biz) {
+        List<Receiver> receivers = receiverFactory.substances(receiver);
+        List<AbstractTunnel> tunnels = tunnelFactory.substances(tunnel);
+        List<Business> bizs = businessFactory.substances(biz);
+        receivers.forEach(r -> tunnels.forEach(t -> bizs.forEach(b -> queue.reportReceipt(messageId, r, t, b))));
     }
 
     private Set<AbstractTunnelPusher> assemblePusher(Set<PusherIdentity> pusher) {

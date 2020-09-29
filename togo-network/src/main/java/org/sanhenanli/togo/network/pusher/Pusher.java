@@ -42,8 +42,10 @@ public interface Pusher {
     /**
      * 客户端上报消息回执
      * @param messageId 业务方消息id
+     * @param receiver 接收者
+     * @param tunnel 使用的通道
      * @param biz 业务
      */
-    void reportReceipt(String messageId, String biz);
+    void reportReceipt(String messageId, String receiver, String tunnel, String biz);
 
 }

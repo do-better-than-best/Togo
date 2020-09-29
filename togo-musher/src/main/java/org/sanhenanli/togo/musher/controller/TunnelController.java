@@ -2,7 +2,7 @@ package org.sanhenanli.togo.musher.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.sanhenanli.togo.musher.model.Rs;
+import org.sanhenanli.togo.musher.model.basic.Rs;
 import org.sanhenanli.togo.musher.model.enums.TunnelTypeEnum;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

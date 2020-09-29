@@ -8,9 +8,7 @@ package org.sanhenanli.togo.network.rule;
  */
 public class TimeGapRule extends TimeWindowRule {
 
-    protected long quota = 1;
-
-    public TimeGapRule(long mills) {
-        super(mills, 1);
+    public TimeGapRule(long seconds) {
+        super(seconds, 1);
     }
 }
