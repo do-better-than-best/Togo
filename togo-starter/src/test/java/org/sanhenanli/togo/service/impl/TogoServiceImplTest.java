@@ -1,6 +1,5 @@
 package org.sanhenanli.togo.service.impl;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.sanhenanli.togo.TogoApplicationTest;
 import org.sanhenanli.togo.config.TogoConfig;
@@ -30,13 +29,11 @@ public class TogoServiceImplTest extends TogoApplicationTest {
     @Autowired
     private StandardPusher togoPusher;
 
-    @Ignore
     @Test
     public void onStart() throws InterruptedException {
         Thread.sleep(10000);
     }
 
-    @Ignore
     @Test
     public void generalPush() throws InterruptedException {
         togoPusher.add(
@@ -52,7 +49,6 @@ public class TogoServiceImplTest extends TogoApplicationTest {
         Thread.sleep(10000);
     }
 
-    @Ignore
     @Test
     public void scheduledPush() throws InterruptedException {
         togoPusher.add(
@@ -69,7 +65,6 @@ public class TogoServiceImplTest extends TogoApplicationTest {
         Thread.sleep(10000);
     }
 
-    @Ignore
     @Test
     public void valveTest() throws InterruptedException {
         TimeGapValve tmpValue = new TimeGapValve(new TimeGapRule(3).receiverScope(RuleScopeOfReceiver.DEFAULT).tunnelScope(RuleScopeOfTunnel.DEFAULT));
@@ -90,7 +85,6 @@ public class TogoServiceImplTest extends TogoApplicationTest {
         togoPusher.removeValve(tmpValue);
     }
 
-    @Ignore
     @Test
     public void suggestTimeTest() throws InterruptedException {
         TimeGapValve tmpValue = new TimeGapValve(new TimeGapRule(2).receiverScope(RuleScopeOfReceiver.DEFAULT).tunnelScope(RuleScopeOfTunnel.DEFAULT));
@@ -111,7 +105,6 @@ public class TogoServiceImplTest extends TogoApplicationTest {
         togoPusher.removeValve(tmpValue);
     }
 
-    @Ignore
     @Test
     public void orderedPush() throws InterruptedException {
         for (int i = 0; i < 10; i++) {
@@ -137,12 +130,12 @@ public class TogoServiceImplTest extends TogoApplicationTest {
         togoPusher.getTunnelFactory().register(togoPusher.getTunnelFactory().getSubstanceByName(TogoConfig.TUNNEL_LOG_NAME), "tt1");
         togoPusher.getTunnelFactory().register(togoPusher.getTunnelFactory().getSubstanceByName(TogoConfig.TUNNEL_CONSOLE_NAME), "tt1");
 
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 1000; i++) {
             togoPusher.add(
                     "r1",
                     new Message(
                             String.valueOf(1000 + i),
-                            new Business("b5"),
+                            new Business("b3"),
                             "this is msg NO." + (1000 + i),
                             new RetryablePushPolicy(PushTunnelPolicy.INSTANTLY, new InstantlyTrigger(), RetryPolicy.NO_RETRY)
                     ),
