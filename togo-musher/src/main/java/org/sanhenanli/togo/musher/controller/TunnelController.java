@@ -23,7 +23,7 @@ public class TunnelController {
     @ApiOperation("列举现有的通道类型")
     @GetMapping("/const/type/list")
     public Rs<List<TunnelTypeEnum>> listAvailableTunnelTypes() {
-        return Rs.ok();
+        return Rs.success();
     }
 
 }

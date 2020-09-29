@@ -4,7 +4,6 @@ import org.sanhenanli.togo.jpa.model.MessageEntity;
 import org.sanhenanli.togo.api.model.MessageDetail;
 import org.sanhenanli.togo.api.model.enums.PushStatusEnum;
 import org.sanhenanli.togo.api.repository.MessageRepository;
-import org.sanhenanli.togo.network.trigger.InstantlyTrigger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
