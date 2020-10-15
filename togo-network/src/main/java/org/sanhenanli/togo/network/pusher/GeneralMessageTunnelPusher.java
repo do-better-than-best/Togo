@@ -48,7 +48,7 @@ public class GeneralMessageTunnelPusher extends AbstractTunnelPusher {
         TunnelTip tunnelTip = push(message);
         markTried(message);
         if (tunnelTip.isOk()) {
-            recorder.recordSuccess(message);
+            recorder.recordSuccess(message, tunnelTip);
         } else {
             if (message.retryable()) {
                 recorder.recordRetry(message, tunnelTip);

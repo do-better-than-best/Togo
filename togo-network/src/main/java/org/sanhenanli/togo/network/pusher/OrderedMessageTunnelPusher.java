@@ -53,7 +53,7 @@ public class OrderedMessageTunnelPusher extends AbstractTunnelPusher {
         TunnelTip tunnelTip = push(message);
         if (tunnelTip.isOk()) {
             markTried(message);
-            recorder.recordSuccess(message);
+            recorder.recordSuccess(message, tunnelTip);
             return true;
         } else if (tunnelTip.isNotConnected() && message.getPolicy().getTunnelPolicy().isStateful()) {
             queue.add(receiver, message, tunnel, true);

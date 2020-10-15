@@ -2,6 +2,7 @@ package org.sanhenanli.togo.jpa.repository;
 
 import org.sanhenanli.togo.jpa.model.MessageEntity;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
 
 /**
@@ -9,6 +10,7 @@ import org.springframework.data.repository.CrudRepository;
  *
  * @author zhouwenxiang
  */
+@Repository
 public interface MessageRepository extends CrudRepository<MessageEntity, Integer> {
 
     MessageEntity findByMessageIdAndReceiverAndTunnelAndBiz(String messageId, String receiver, String tunnel, String biz);

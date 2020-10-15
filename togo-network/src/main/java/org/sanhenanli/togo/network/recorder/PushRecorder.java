@@ -56,8 +56,9 @@ public interface PushRecorder {
     /**
      * 记录消息推送成功
      * @param message 消息
+     * @param tip 推送结果
      */
-    void recordSuccess(Message message);
+    void recordSuccess(Message message, TunnelTip tip);
 
     /**
      * 记录消息重试

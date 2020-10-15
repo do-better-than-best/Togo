@@ -40,6 +40,10 @@ public class TunnelTip {
         return new TunnelTip(TunnelTipCodeEnum.OK, null, null, null);
     }
 
+    public static TunnelTip ok(String tip) {
+        return new TunnelTip(TunnelTipCodeEnum.OK, null, tip, null);
+    }
+
     public static TunnelTip error(String tip) {
         return new TunnelTip(TunnelTipCodeEnum.ERROR, null, tip, null);
     }

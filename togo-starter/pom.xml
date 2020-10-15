@@ -43,7 +43,7 @@
     </dependencies>
 
     <build>
-        <finalName>hm-business</finalName>
+        <finalName>togo</finalName>
         <resources>
             <resource>
                 <filtering>true</filtering>

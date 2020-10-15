@@ -182,9 +182,9 @@ public class StandardPusherBuilder {
             }
 
             @Override
-            public void recordSuccess(Message message) {
+            public void recordSuccess(Message message, TunnelTip tip) {
                 messageRepository.updateMessageStatusAndTryTimes(message.getId(), PushStatusEnum.SUCCESS, message.getTryTimes().get());
-                messagePushRepository.updateMessagePushStatus(message.getId(), PushStatusEnum.SUCCESS, null, null);
+                messagePushRepository.updateMessagePushStatus(message.getId(), PushStatusEnum.SUCCESS, tip.getCause(), tip.getTip());
             }
 
             @Override

@@ -12,7 +12,7 @@ import org.sanhenanli.togo.api.model.enums.PushStatusEnum;
 public interface MessageRepository {
 
     /**
-     * 保存一条消息, 对messageId*biz去重
+     * 保存一条消息, 对messageId*receiver*tunnel*biz去重
      * @param message 消息
      * @return 消息, 打上了唯一id
      */
