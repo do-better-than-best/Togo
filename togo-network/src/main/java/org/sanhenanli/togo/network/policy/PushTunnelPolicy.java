@@ -1,8 +1,9 @@
 package org.sanhenanli.togo.network.policy;
 
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+
+import java.io.Serializable;
 
 /**
  * datetime 2020/1/16 9:30
@@ -12,8 +13,9 @@ import lombok.Getter;
  */
 @AllArgsConstructor
 @Getter
-public class PushTunnelPolicy {
+public class PushTunnelPolicy implements Serializable {
 
+    private static final long serialVersionUID = 6156808160091467215L;
     /**
      * 立即推送
      * push instantly

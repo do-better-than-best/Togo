@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -14,8 +15,9 @@ import java.time.LocalDateTime;
  */
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
-public class ScheduleTrigger implements PushTrigger {
+public class ScheduleTrigger implements PushTrigger, Serializable {
 
+    private static final long serialVersionUID = -5080626962667529624L;
     /**
      * 定时
      */

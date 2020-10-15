@@ -20,7 +20,7 @@ public interface TunnelPusher {
 
     /**
      * 准备重新推送
-     * 获取锁的情况下, 重置所有pushing的状态为create
+     * 获取锁的情况下(即没有任何其他服务正在推送中), 重置所有pushing的状态为create
      */
     void preRepush();
 

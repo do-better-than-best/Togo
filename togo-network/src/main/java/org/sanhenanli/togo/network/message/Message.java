@@ -4,6 +4,7 @@ import org.sanhenanli.togo.network.business.Business;
 import org.sanhenanli.togo.network.policy.RetryablePushPolicy;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -13,8 +14,9 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author zhouwenxiang
  */
 @Data
-public class Message {
+public class Message implements Serializable {
 
+    private static final long serialVersionUID = -7338366165153600298L;
     /**
      * 消息的唯一id
      */

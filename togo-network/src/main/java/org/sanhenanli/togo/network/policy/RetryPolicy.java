@@ -5,6 +5,8 @@ import lombok.Getter;
 import org.sanhenanli.togo.network.trigger.InstantlyTrigger;
 import org.sanhenanli.togo.network.trigger.PushTrigger;
 
+import java.io.Serializable;
+
 /**
  * datetime 2020/1/16 9:42
  * 消息推送重试策略
@@ -13,13 +15,9 @@ import org.sanhenanli.togo.network.trigger.PushTrigger;
  */
 @EqualsAndHashCode(callSuper = true)
 @Getter
-public class RetryPolicy extends PushPolicy {
+public class RetryPolicy extends PushPolicy implements Serializable {
 
-    /**
-     * 不重试
-     */
-    public static final RetryPolicy NO_RETRY = defaultRetry(0);
-
+    private static final long serialVersionUID = 4518835314145141069L;
     /**
      * 总共可重试次数, 0不可重试
      */

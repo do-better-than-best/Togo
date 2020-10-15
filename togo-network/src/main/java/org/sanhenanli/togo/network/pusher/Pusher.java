@@ -20,7 +20,7 @@ public interface Pusher {
      * @param receiver 接收者
      * @param message 消息
      * @param tunnel 使用的通道
-     * @param head 是否有限推送, true优先
+     * @param head 是否优先推送, true优先
      */
     void add(String receiver, Message message, String tunnel, boolean head);
 

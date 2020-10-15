@@ -42,7 +42,7 @@ public class TogoServiceImplTest extends TogoApplicationTest {
                         "1",
                         new Business("b1"),
                         "this is my general msg",
-                        new RetryablePushPolicy(PushTunnelPolicy.INSTANTLY, new InstantlyTrigger(), RetryPolicy.NO_RETRY)
+                        new RetryablePushPolicy(PushTunnelPolicy.INSTANTLY, new InstantlyTrigger(), RetryPolicy.defaultRetry(0))
                 ),
                 TogoConfig.TUNNEL_CONSOLE_NAME,
                 false);
@@ -57,7 +57,7 @@ public class TogoServiceImplTest extends TogoApplicationTest {
                         "2",
                         new Business("b1"),
                         "this is my scheduled msg",
-                        new RetryablePushPolicy(PushTunnelPolicy.INSTANTLY, ScheduleTrigger.at(LocalDateTime.now().plusSeconds(5)), RetryPolicy.NO_RETRY)
+                        new RetryablePushPolicy(PushTunnelPolicy.INSTANTLY, ScheduleTrigger.at(LocalDateTime.now().plusSeconds(5)), RetryPolicy.defaultRetry(0))
                 ),
                 TogoConfig.TUNNEL_LOG_NAME,
                 false
@@ -76,7 +76,7 @@ public class TogoServiceImplTest extends TogoApplicationTest {
                             String.valueOf(10 + i),
                             new Business("b1"),
                             "this is msg NO." + i,
-                            new RetryablePushPolicy(PushTunnelPolicy.INSTANTLY, new InstantlyTrigger(), RetryPolicy.NO_RETRY)
+                            new RetryablePushPolicy(PushTunnelPolicy.INSTANTLY, new InstantlyTrigger(), RetryPolicy.defaultRetry(0))
                     ),
                     TogoConfig.TUNNEL_CONSOLE_NAME,
                     false);
@@ -114,7 +114,7 @@ public class TogoServiceImplTest extends TogoApplicationTest {
                             String.valueOf(50 + i),
                             new Business("b2"),
                             "this is msg NO." + (50 + i),
-                            new RetryablePushPolicy(PushTunnelPolicy.ordered(10000), new InstantlyTrigger(), RetryPolicy.NO_RETRY)
+                            new RetryablePushPolicy(PushTunnelPolicy.ordered(10000), new InstantlyTrigger(), RetryPolicy.defaultRetry(0))
                     ),
                     TogoConfig.TUNNEL_LOG_NAME,
                     false);
@@ -137,7 +137,7 @@ public class TogoServiceImplTest extends TogoApplicationTest {
                             String.valueOf(1000 + i),
                             new Business("b3"),
                             "this is msg NO." + (1000 + i),
-                            new RetryablePushPolicy(PushTunnelPolicy.INSTANTLY, new InstantlyTrigger(), RetryPolicy.NO_RETRY)
+                            new RetryablePushPolicy(PushTunnelPolicy.INSTANTLY, new InstantlyTrigger(), RetryPolicy.defaultRetry(0))
                     ),
                     "tt1",
                     false);

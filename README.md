@@ -28,6 +28,12 @@
 ### 自定义接收目标组
 - 实现`ReceiverRepository`替代`SimpleReceiverRepository`
 
+### 自定义通道组
+- 实现`TunnelRepository`替代`InMemoryTunnelRepository`
+
+### 取消推送
+- 由于自定义了业务组目标组通道组, 一条业务消息的提交可能对应多条待发送, 故不设置取消推送功能
+
 ### 多实例扩展
 - 实现分布式锁`PushLocker`替代`InMemoryPushLocker`
 - 按需实现通道repo`TunnelRepository`替代`InMemoryTunnelRepository`
