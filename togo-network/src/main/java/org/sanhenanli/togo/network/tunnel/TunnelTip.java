@@ -7,6 +7,7 @@ import org.sanhenanli.togo.network.tunnel.enums.TunnelTipCauseEnum;
 import org.sanhenanli.togo.network.tunnel.enums.TunnelTipCodeEnum;
 import lombok.AllArgsConstructor;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -17,8 +18,9 @@ import java.time.LocalDateTime;
  */
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
-public class TunnelTip {
+public class TunnelTip implements Serializable {
 
+    private static final long serialVersionUID = -9221134829043745267L;
     /**
      * 推送结果码
      */
