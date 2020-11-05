@@ -14,18 +14,17 @@ import lombok.Getter;
 public enum TunnelTipCodeEnum {
 
     /**
-     * 未知
-     */
-    UNKNOWN(1),
-    /**
      * 成功
      */
-    OK(2),
+    OK(1),
     /**
      * 失败
      */
-    ERROR(3),
+    ERROR(2),
     ;
 
-    private int code;
+    /**
+     * code
+     */
+    private final int code;
 }

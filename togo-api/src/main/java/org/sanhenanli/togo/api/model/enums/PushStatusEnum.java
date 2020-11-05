@@ -39,7 +39,7 @@ public enum PushStatusEnum {
     RETRYING(5)
     ;
 
-    private int status;
+    private final int status;
 
     public static PushStatusEnum getByStatus(int status) {
         for (PushStatusEnum value : PushStatusEnum.values()) {

@@ -34,7 +34,7 @@ public enum TunnelTipCauseEnum {
     /**
      * 原因code
      */
-    private int cause;
+    private final int cause;
 
     public static TunnelTipCauseEnum getByCause(int cause) {
         for (TunnelTipCauseEnum value : TunnelTipCauseEnum.values()) {

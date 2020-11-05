@@ -1,6 +1,5 @@
 package org.sanhenanli.togo.network.tunnel;
 
-import lombok.AccessLevel;
 import lombok.Getter;
 import org.sanhenanli.togo.network.valve.ValveTip;
 import org.sanhenanli.togo.network.tunnel.enums.TunnelTipCauseEnum;
@@ -66,10 +65,6 @@ public class TunnelTip implements Serializable {
         return new TunnelTip(tunnel, TunnelTipCodeEnum.ERROR, TunnelTipCauseEnum.BLOCKED, valveTip.getTip(), valveTip.getSuggestTime());
     }
 
-    public static TunnelTip unknown(String tunnel, String tip) {
-        return new TunnelTip(tunnel, TunnelTipCodeEnum.UNKNOWN, TunnelTipCauseEnum.UNKNOWN, tip, null);
-    }
-
     public boolean isOk() {
         return code == TunnelTipCodeEnum.OK;
     }
@@ -78,15 +73,15 @@ public class TunnelTip implements Serializable {
         return code == TunnelTipCodeEnum.ERROR;
     }
 
-    public boolean isNotConnected() {
+    public boolean causeNotConnected() {
         return cause == TunnelTipCauseEnum.NOT_CONNECTED;
     }
 
-    public boolean isBlocked() {
+    public boolean causeBlocked() {
         return cause == TunnelTipCauseEnum.BLOCKED;
     }
 
-    public boolean isNoReceipt() {
+    public boolean causeNoReceipt() {
         return cause == TunnelTipCauseEnum.NO_RECEIPT;
     }
 
