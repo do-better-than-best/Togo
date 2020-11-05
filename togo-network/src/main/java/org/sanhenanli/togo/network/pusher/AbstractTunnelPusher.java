@@ -170,7 +170,7 @@ public abstract class AbstractTunnelPusher extends PusherIdentity implements Tun
         for (long now = start, step = 100; now - start < timeout; step *= 1.2) {
             if (queue.consumeReceipt(id)) {
                 // find receipt
-                return TunnelTip.ok();
+                return TunnelTip.ok(tunnel.getName());
             }
             try {
                 Thread.sleep(step);
@@ -179,7 +179,7 @@ public abstract class AbstractTunnelPusher extends PusherIdentity implements Tun
             }
             now = System.currentTimeMillis();
         }
-        return TunnelTip.noReceipt();
+        return TunnelTip.noReceipt(tunnel.getName());
     }
 
     /**

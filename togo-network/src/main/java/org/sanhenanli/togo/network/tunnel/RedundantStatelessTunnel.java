@@ -26,7 +26,7 @@ public class RedundantStatelessTunnel extends AbstractTunnel {
         for (AbstractValve valve : pusher.getValves()) {
             ValveTip valveTip = valve.control(receiver, msg, this);
             if (!valveTip.isOk()) {
-                return TunnelTip.blocked(valveTip);
+                return TunnelTip.blocked(name, valveTip);
             }
         }
         return doPush(receiver, msg.getData());
@@ -43,7 +43,7 @@ public class RedundantStatelessTunnel extends AbstractTunnel {
                 tip.append(tunnelTip.getTip());
             }
         }
-        return TunnelTip.error(tip.toString());
+        return TunnelTip.error(name, tip.toString());
     }
 
     /**

@@ -23,7 +23,7 @@ public abstract class AbstractStatelessTunnel extends AbstractTunnel {
         for (AbstractValve valve : pusher.getValves()) {
             ValveTip valveTip = valve.control(receiver, msg, this);
             if (!valveTip.isOk()) {
-                return TunnelTip.blocked(valveTip);
+                return TunnelTip.blocked(name, valveTip);
             }
         }
         return doPush(receiver, msg.getData());

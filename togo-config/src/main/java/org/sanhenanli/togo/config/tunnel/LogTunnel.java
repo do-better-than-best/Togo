@@ -22,6 +22,6 @@ public class LogTunnel extends AbstractStatelessTunnel {
     public TunnelTip doPush(Receiver receiver, String msg) {
         String receiverName = receiver.getName();
         log.info("send to {}: {}", receiverName, msg);
-        return TunnelTip.ok();
+        return TunnelTip.ok(name);
     }
 }

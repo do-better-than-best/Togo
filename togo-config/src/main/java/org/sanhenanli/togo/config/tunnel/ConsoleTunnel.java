@@ -22,6 +22,6 @@ public class ConsoleTunnel extends AbstractStatelessTunnel {
         String receiverName = receiver.getName();
         msg = String.format("send to %s: %s", receiverName, msg);
         System.out.println(msg);
-        return TunnelTip.ok();
+        return TunnelTip.ok(name);
     }
 }

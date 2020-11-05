@@ -16,11 +16,15 @@ import java.time.LocalDateTime;
  *
  * @author zhouwenxiang
  */
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor
 @Getter
 public class TunnelTip implements Serializable {
 
     private static final long serialVersionUID = -9221134829043745267L;
+    /**
+     * 通道名称
+     */
+    private String tunnel;
     /**
      * 推送结果码
      */
@@ -38,28 +42,32 @@ public class TunnelTip implements Serializable {
      */
     private LocalDateTime suggestTime;
 
-    public static TunnelTip ok() {
-        return new TunnelTip(TunnelTipCodeEnum.OK, null, null, null);
+    public static TunnelTip ok(String tunnel) {
+        return new TunnelTip(tunnel, TunnelTipCodeEnum.OK, null, null, null);
     }
 
-    public static TunnelTip ok(String tip) {
-        return new TunnelTip(TunnelTipCodeEnum.OK, null, tip, null);
+    public static TunnelTip ok(String tunnel, String tip) {
+        return new TunnelTip(tunnel, TunnelTipCodeEnum.OK, null, tip, null);
     }
 
-    public static TunnelTip error(String tip) {
-        return new TunnelTip(TunnelTipCodeEnum.ERROR, null, tip, null);
+    public static TunnelTip error(String tunnel, String tip) {
+        return new TunnelTip(tunnel, TunnelTipCodeEnum.ERROR, null, tip, null);
     }
 
-    public static TunnelTip notConnected() {
-        return new TunnelTip(TunnelTipCodeEnum.ERROR, TunnelTipCauseEnum.NOT_CONNECTED, null, null);
+    public static TunnelTip notConnected(String tunnel) {
+        return new TunnelTip(tunnel, TunnelTipCodeEnum.ERROR, TunnelTipCauseEnum.NOT_CONNECTED, null, null);
     }
 
-    public static TunnelTip noReceipt() {
-        return new TunnelTip(TunnelTipCodeEnum.ERROR, TunnelTipCauseEnum.NO_RECEIPT, null, null);
+    public static TunnelTip noReceipt(String tunnel) {
+        return new TunnelTip(tunnel, TunnelTipCodeEnum.ERROR, TunnelTipCauseEnum.NO_RECEIPT, null, null);
     }
 
-    public static TunnelTip blocked(ValveTip valveTip) {
-        return new TunnelTip(TunnelTipCodeEnum.ERROR, TunnelTipCauseEnum.BLOCKED, valveTip.getTip(), valveTip.getSuggestTime());
+    public static TunnelTip blocked(String tunnel, ValveTip valveTip) {
+        return new TunnelTip(tunnel, TunnelTipCodeEnum.ERROR, TunnelTipCauseEnum.BLOCKED, valveTip.getTip(), valveTip.getSuggestTime());
+    }
+
+    public static TunnelTip unknown(String tunnel, String tip) {
+        return new TunnelTip(tunnel, TunnelTipCodeEnum.UNKNOWN, TunnelTipCauseEnum.UNKNOWN, tip, null);
     }
 
     public boolean isOk() {
@@ -81,6 +89,5 @@ public class TunnelTip implements Serializable {
     public boolean isNoReceipt() {
         return cause == TunnelTipCauseEnum.NO_RECEIPT;
     }
-
 
 }

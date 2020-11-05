@@ -23,7 +23,7 @@ public abstract class AbstractStatefulTunnel extends AbstractSingleTunnel implem
         for (AbstractValve valve : pusher.getValves()) {
             ValveTip valveTip = valve.control(receiver, msg, this);
             if (!valveTip.isOk()) {
-                return TunnelTip.blocked(valveTip);
+                return TunnelTip.blocked(name, valveTip);
             }
         }
         return doPush(receiver, msg.getData());
@@ -34,12 +34,12 @@ public abstract class AbstractStatefulTunnel extends AbstractSingleTunnel implem
         for (AbstractValve valve : pusher.getValves()) {
             ValveTip valveTip = valve.control(receiver, msg, this);
             if (!valveTip.isOk()) {
-                return TunnelTip.blocked(valveTip);
+                return TunnelTip.blocked(name, valveTip);
             }
         }
         if (connected(receiver)) {
             return doPush(receiver, msg.getData());
         }
-        return TunnelTip.notConnected();
+        return TunnelTip.notConnected(name);
     }
 }

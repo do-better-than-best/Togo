@@ -26,7 +26,7 @@ public class RedundantStatefulTunnel extends AbstractTunnel implements StatefulT
         for (AbstractValve valve : pusher.getValves()) {
             ValveTip valveTip = valve.control(receiver, msg, this);
             if (!valveTip.isOk()) {
-                return TunnelTip.blocked(valveTip);
+                return TunnelTip.blocked(name, valveTip);
             }
         }
         return doPush(receiver, msg.getData());
@@ -37,13 +37,13 @@ public class RedundantStatefulTunnel extends AbstractTunnel implements StatefulT
         for (AbstractValve valve : pusher.getValves()) {
             ValveTip valveTip = valve.control(receiver, msg, this);
             if (!valveTip.isOk()) {
-                return TunnelTip.blocked(valveTip);
+                return TunnelTip.blocked(name, valveTip);
             }
         }
         if (connected(receiver)) {
             return doPush(receiver, msg.getData());
         }
-        return TunnelTip.notConnected();
+        return TunnelTip.notConnected(name);
     }
 
     @Override
@@ -67,7 +67,7 @@ public class RedundantStatefulTunnel extends AbstractTunnel implements StatefulT
                 tip.append(tunnelTip.getTip());
             }
         }
-        return TunnelTip.error(tip.toString());
+        return TunnelTip.error(name, tip.toString());
     }
 
     /**
