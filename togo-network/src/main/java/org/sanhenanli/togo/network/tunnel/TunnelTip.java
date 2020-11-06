@@ -1,6 +1,7 @@
 package org.sanhenanli.togo.network.tunnel;
 
 import lombok.Getter;
+import lombok.ToString;
 import org.sanhenanli.togo.network.valve.ValveTip;
 import org.sanhenanli.togo.network.tunnel.enums.TunnelTipCauseEnum;
 import org.sanhenanli.togo.network.tunnel.enums.TunnelTipCodeEnum;
@@ -17,6 +18,7 @@ import java.time.LocalDateTime;
  */
 @AllArgsConstructor
 @Getter
+@ToString
 public class TunnelTip implements Serializable {
 
     private static final long serialVersionUID = -9221134829043745267L;
