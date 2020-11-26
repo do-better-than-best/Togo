@@ -32,6 +32,7 @@ public class SimpleExecutor implements Executor {
         executorService.setQueueCapacity(10000);
         executorService.setThreadNamePrefix("do-push-thread-");
         executorService.setRejectedExecutionHandler((r, executor) -> log.error("reject task"));
+        executorService.initialize();
 
         highPriorityExecutorService = new ThreadPoolTaskExecutor();
         highPriorityExecutorService.setCorePoolSize(10);
@@ -40,6 +41,7 @@ public class SimpleExecutor implements Executor {
         highPriorityExecutorService.setQueueCapacity(10000);
         highPriorityExecutorService.setThreadNamePrefix("start-push-thread-");
         highPriorityExecutorService.setRejectedExecutionHandler((r, executor) -> log.error("reject task"));
+        executorService.initialize();
 
         scheduledExecutorService = new ScheduledThreadPoolExecutor(30,
                 new CustomizableThreadFactory("scheduled-push-thread-"), (r, executor) -> log.error("reject task"));
